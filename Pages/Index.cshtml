@@ -1,0 +1,48 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Clipy - Instant Notes Sharing";
+}
+
+<!-- Hero Section -->
+<header class="container" style="padding: 4rem 1rem;  border-radius: 0.5rem; text-align: center; margin-bottom: 3rem;">
+    <h1 style="font-size: 3rem;">Welcome to <strong>Clipy</strong></h1>
+    <p class="lead" style="font-size: 1.25rem; margin: 1rem 0;">Share your notes instantly with a simple URL. No signup,
+        no clutter, just notes.</p>
+    <a href="/ViewNote" class="secondary" type="button">View note </a>
+    <a href="/AddNote" type="button" style="margin-left:10px">Add your first note </a>
+</header>
+
+<!-- Features Section -->
+<section class="container grid" style="gap: 2rem; margin-bottom: 3rem;">
+    <article class="card" style="padding: 2rem; transition: transform 0.2s; cursor: default;">
+        <h3>Instant Sharing</h3>
+        <p>Create a note and get a URL instantly. Share it with anyone, anywhere.</p>
+    </article>
+
+    <article class="card" style="padding: 2rem; transition: transform 0.2s; cursor: default;">
+        <h3>Custom Codes</h3>
+        <p>Use your own code/slug for the URL or let Clipy generate one for you.</p>
+    </article>
+
+    <article class="card" style="padding: 2rem; transition: transform 0.2s; cursor: default;">
+        <h3>Lightweight & Fast</h3>
+        <p>No heavy frameworks, no unnecessary scripts. Just clean, responsive design.</p>
+    </article>
+</section>
+
+<style>
+    /* Hover effect for feature cards */
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive grid for features */
+    @@media (min-width: 768px) {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>

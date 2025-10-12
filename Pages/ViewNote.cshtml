@@ -1,0 +1,42 @@
+@page
+@model ViewNoteModel
+@{
+    ViewData["Title"] = "View Note - Clipy";
+}
+
+<div class="container">
+
+    @if (Model.Note != null)
+    {
+        <h2>Note</h2>
+        <section style="padding: 2rem; margin-top: 1rem;">
+            <p>@Model.Note.Content</p>
+        </section>
+    }
+    else
+    {
+        <h2>Find Your Note</h2>
+        <p>Type the code of your note to view it:</p>
+
+        <form method="get">
+            <label for="Code">Note Code</label>
+            <input type="text" id="Code" name="code" placeholder="Enter your code here" required>
+            <button type="submit">View Note</button>
+        </form>
+
+        @if (Model.Attempted && Model.Note == null)
+        {
+            <p class="note" style="color:red; margin-top:1rem;">Note not found. Please check the code and try again.</p>
+        }
+    }
+</div>
+
+@if (Model.Note != null)
+{
+    <section class="card" style="padding: 2rem; margin-top: 1rem;">
+        @if (Model.WillDeleteAfterView)
+        {
+            <p class="note" style="color: orange;">⚠ This note will be deleted after this view.</p>
+        }
+    </section>
+}

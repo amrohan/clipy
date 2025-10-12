@@ -1,0 +1,39 @@
+@page
+@model AddNoteModel
+
+<h2>Add a Note</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <section class="note" style="color:red; margin-bottom:1rem;">
+        @Model.ErrorMessage
+    </section>
+}
+
+<form method="post">
+    <fieldset>
+        <label for="NoteContent">Your Note</label>
+        <textarea id="NoteContent" name="NoteContent" required placeholder="Type your note here..."
+            rows="5">@Model.NoteContent</textarea>
+
+        <label for="Code">Custom Code <span class="note">(optional)</span></label>
+        <input type="text" id="Code" name="Code" maxlength="10" placeholder="Custom code or leave empty"
+            value="@Model.Code">
+
+        <label>
+            <input type="checkbox" name="DeleteAfterView" value="true" @(Model.DeleteAfterView ? "checked" : "")>
+            Delete after someone views it
+        </label>
+
+        <button style="margin-top:1rem" type="submit">Save Note</button>
+    </fieldset>
+</form>
+
+@if (Model.NoteUrl != null)
+{
+    <section class="card" style="margin-top:2rem; padding:1.5rem;">
+        <h3>Note Created!</h3>
+        <p>Your note URL:</p>
+        <p><a href="@Model.NoteUrl" target="_blank">@Model.NoteUrl</a></p>
+    </section>
+}
