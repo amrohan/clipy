@@ -22,9 +22,20 @@
 <body>
     <header role="banner" class="container">
         <nav>
-            <a href="/" class="brand">Clipy</a>
+
             <ul>
-                <li><a asp-page="/Privacy">Privacy</a></li>
+                <li>
+                    <a href="/" class="brand">Clipy</a>
+
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a asp-page="/AddNote">Add note</a>
+                </li>
+                <li>
+                    <a asp-page="/ViewNote">View note</a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -34,10 +45,6 @@
         @RenderBody()
     </main>
 
-    <!-- Footer -->
-    <footer role="contentinfo" class="container">
-        <p>&copy; 2025 - clipy — Notes made fun, not creepy. <a asp-page="/Privacy">Privacy</a></p>
-    </footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

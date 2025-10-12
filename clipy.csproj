@@ -8,8 +8,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
-
   </PropertyGroup>
 
   <ItemGroup>

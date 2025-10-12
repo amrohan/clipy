@@ -4,45 +4,91 @@
     ViewData["Title"] = "Clipy - Instant Notes Sharing";
 }
 
-<!-- Hero Section -->
-<header class="container" style="padding: 4rem 1rem;  border-radius: 0.5rem; text-align: center; margin-bottom: 3rem;">
-    <h1 style="font-size: 3rem;">Welcome to <strong>Clipy</strong></h1>
-    <p class="lead" style="font-size: 1.25rem; margin: 1rem 0;">Share your notes instantly with a simple URL. No signup,
-        no clutter, just notes.</p>
-    <a href="/ViewNote" class="secondary" type="button">View note </a>
-    <a href="/AddNote" type="button" style="margin-left:10px">Add your first note </a>
-</header>
+<main>
+    <!-- Hero Section -->
+    <header>
+        <h1>Welcome to <strong>Clipy</strong></h1>
+        <p class="lead">
+            Share your notes instantly with a simple URL — no signup, no clutter, just notes.
+            <br><br>
+            Create a quick note, share the link, and let others view it right away.
+            You can even mark notes to self-destruct after being viewed once for extra privacy.
+            Perfect for sharing temporary passwords, messages, or short snippets securely.
+        </p>
+    </header>
 
-<!-- Features Section -->
-<section class="container grid" style="gap: 2rem; margin-bottom: 3rem;">
-    <article class="card" style="padding: 2rem; transition: transform 0.2s; cursor: default;">
-        <h3>Instant Sharing</h3>
-        <p>Create a note and get a URL instantly. Share it with anyone, anywhere.</p>
-    </article>
+    <!-- CTA Buttons -->
+    <div class="button-group">
+        <a href="/AddNote" role="button" style="width:100%">Add Your First Note</a>
+        <a href="/ViewNote" role="button" class="contrast" style="width:100%">View Note</a>
+    </div>
 
-    <article class="card" style="padding: 2rem; transition: transform 0.2s; cursor: default;">
-        <h3>Custom Codes</h3>
-        <p>Use your own code/slug for the URL or let Clipy generate one for you.</p>
-    </article>
+    <!-- How It Works -->
+    <section style="margin-top:4rem;">
+        <h3>How It Works</h3>
+        <details open>
+            <summary>1. Write your note</summary>
+            <p>Go to the “Add Note” page, type your message, and choose whether to delete it after one view for privacy.
+            </p>
+        </details>
 
-    <article class="card" style="padding: 2rem; transition: transform 0.2s; cursor: default;">
-        <h3>Lightweight & Fast</h3>
-        <p>No heavy frameworks, no unnecessary scripts. Just clean, responsive design.</p>
-    </article>
-</section>
+        <details>
+            <summary>2. Get your shareable link</summary>
+            <p>Once you save your note, you’ll get a unique URL. Share it with anyone — no login required.</p>
+        </details>
+
+        <details>
+            <summary>3. View securely</summary>
+            <p>Anyone with the link can view the note. If you enabled “Delete after view,” the note is permanently
+                deleted after it’s read once.</p>
+        </details>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer role="contentinfo" style="text-align:center; margin-top:3rem; font-size:0.95rem; opacity:0.85;">
+    <p>
+        &copy; 2025 — <strong>Clipy</strong> —
+        Notes made fun, not creepy.
+        <a asp-page="/Privacy">Privacy</a> ·
+        Made by <a href="https://amrohan.in" target="_blank" rel="noopener">@@amrohan</a>
+    </p>
+</footer>
+
 
 <style>
-    /* Hover effect for feature cards */
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
     }
 
-    /* Responsive grid for features */
-    @@media (min-width: 768px) {
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+    @@media (min-width: 640px) {
+        .button-group {
+            width: 60%;
+            flex-direction: row;
+            margin: 10 auto;
         }
+    }
+
+    details {
+        margin: 1rem 0;
+        border: 1px solid var(--muted-border-color);
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        background-color: var(--surface-2);
+    }
+
+    details summary {
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    details[open] summary {
+        color: var(--primary);
     }
 </style>

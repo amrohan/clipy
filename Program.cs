@@ -2,10 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel((context, options) =>
-{
-    options.Configure(context.Configuration.GetSection("Kestrel"));
-});
+var runTimeUrl = builder.Configuration.GetConnectionString("Url");
 
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -22,4 +19,4 @@ app.UseStaticFiles();
 app.UseRouting();
 app.MapRazorPages();
 
-app.Run();
+app.Run(runTimeUrl);

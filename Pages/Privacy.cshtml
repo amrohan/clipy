@@ -4,49 +4,59 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<main class="container">
-    <hgroup>
+<main>
+    <header style="margin-bottom: 2rem;">
         <h1>@ViewData["Title"]</h1>
-        <p>Because even notes-sharing apps need rules</p>
-    </hgroup>
+        <p class="lead">Because even note-sharing apps need rules </p>
+    </header>
 
-    <article>
+    <section>
         <h2>1. We Respect Your Notes</h2>
         <p>
-            Your notes are yours. We don't peek… unless your note says "Delete me after reading" — in that case, we
-            obey.
+            Your notes are yours. We don't peek — unless your note says "Delete me after reading" —
+            in that case, we obey.
         </p>
-    </article>
 
-    <article>
         <h2>2. No Creepy Tracking</h2>
         <p>
-            We don't track your IP like a hawk. We only store what's needed to deliver your note — kind of like your
-            nosy neighbor who just waves politely.
+            We don't track your IP like a hawk. We only store what's needed to deliver your note —
+            kind of like your nosy neighbor who just waves politely.
         </p>
-    </article>
 
-    <article>
         <h2>3. Custom Codes</h2>
         <p>
-            You can choose your own code for your notes. Just don't pick "1234" — that's boring. And yes, we'll tell you
-            if your custom code is already taken 😂.
+            You can choose your own code for your notes. Just don't pick "1234" — that's boring.
+            And yes, we'll tell you if your custom code is already taken 😂.
         </p>
-    </article>
 
-    <article>
         <h2>4. Self-Destructing Notes</h2>
         <p>
-            If you tick "Delete after view", we will self-destruct the note like a mini-movie explosion. Refreshing
-            the page means it's gone.
+            If you tick "Delete after view", we will self-destruct the note like a mini-movie explosion.
+            Refreshing the page means it's gone.
         </p>
-    </article>
 
-    <article>
         <h2>5. Cookies</h2>
         <p>
-            We don't use cookies for spying. Only the ones necessary for keeping your session alive. Feel free to
-            dunk them in milk.
+            We don't use cookies for spying — only the ones necessary to keep your session alive.
+            Feel free to dunk them in milk 🍪.
         </p>
-    </article>
+    </section>
 </main>
+
+<style>
+    main.container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        line-height: 1.6;
+    }
+
+    h2 {
+        margin-top: 2rem;
+        font-size: 1.3rem;
+    }
+
+    p {
+        margin-bottom: 1rem;
+    }
+</style>

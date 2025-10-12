@@ -52,6 +52,7 @@ public class AddNoteModel : PageModel
         await _db.SaveChangesAsync();
 
         NoteUrl = Url.Page("/ViewNote", null, new { code = code }, Request.Scheme);
+        ModelState.Clear();
 
         return Page();
     }

@@ -1,8 +1,6 @@
 @page
 @model AddNoteModel
 
-<h2>Add a Note</h2>
-
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <section class="note" style="color:red; margin-bottom:1rem;">
@@ -10,30 +8,57 @@
     </section>
 }
 
-<form method="post">
-    <fieldset>
-        <label for="NoteContent">Your Note</label>
-        <textarea id="NoteContent" name="NoteContent" required placeholder="Type your note here..."
-            rows="5">@Model.NoteContent</textarea>
-
-        <label for="Code">Custom Code <span class="note">(optional)</span></label>
-        <input type="text" id="Code" name="Code" maxlength="10" placeholder="Custom code or leave empty"
-            value="@Model.Code">
-
-        <label>
-            <input type="checkbox" name="DeleteAfterView" value="true" @(Model.DeleteAfterView ? "checked" : "")>
-            Delete after someone views it
-        </label>
-
-        <button style="margin-top:1rem" type="submit">Save Note</button>
-    </fieldset>
-</form>
-
 @if (Model.NoteUrl != null)
 {
-    <section class="card" style="margin-top:2rem; padding:1.5rem;">
-        <h3>Note Created!</h3>
+    <section style="margin-top:2rem;">
+        <h2>Note created!</h2>
         <p>Your note URL:</p>
         <p><a href="@Model.NoteUrl" target="_blank">@Model.NoteUrl</a></p>
+
+        <form method="get">
+            <button type="submit" style="margin-top:1rem;">Create New</button>
+        </form>
     </section>
+}
+else
+{
+    <h2>Add a Note</h2>
+    <form method="post" id="noteForm">
+        <fieldset>
+            <label for="NoteContent">Your Note</label>
+            <textarea id="NoteContent" name="NoteContent" required placeholder="Type your note here..."
+            rows="5">@Model.NoteContent</textarea>
+
+            <label for="Code">Custom Code <span class="note">(optional)</span></label>
+            <input type="text" id="Code" name="Code" maxlength="10" placeholder="Custom code or leave empty"
+                value="@Model.Code">
+
+            <label>
+                <input type="checkbox" name="DeleteAfterView" value="true" @(Model.DeleteAfterView ? "checked" : "")>
+                Delete after someone views it
+            </label>
+
+            <button style="margin-top:1rem" type="submit" id="submitBtn">Save Note</button>
+
+            <!-- Hidden progress bar -->
+            <progress id="progressBar" value="0" max="100" style="display:none; margin-top:1rem;"></progress>
+        </fieldset>
+    </form>
+}
+
+@section Scripts {
+    <script>
+        const form = document.getElementById('noteForm');
+        const progressBar = document.getElementById('progressBar');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (form) {
+            form.addEventListener('submit', () => {
+                progressBar.style.display = 'block';
+                progressBar.removeAttribute('value');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Saving...';
+            });
+        }
+    </script>
 }
