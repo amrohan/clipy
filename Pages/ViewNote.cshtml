@@ -6,13 +6,23 @@
 
 @if (Model.Note != null)
 {
-    <h2>Shared Note</h2>
+    <h2>Share Note</h2>
     @if (Model.WillDeleteAfterView)
     {
         <p class="note" style="color: orange;">⚠ This note will be deleted after this view.</p>
     }
-    <section style="padding: 2rem; margin-top: 1rem;">
-        <p>@Model.Note.Content</p>
+
+    <section style="margin-top: 1rem; position: relative;">
+        <button id="copyBtn" title="Copy note"
+            style=" position: absolute; top: 0.5rem; right: 0.5rem; background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px;">
+            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4 a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+        </button>
+
+        <pre id="noteContent" style=" padding: 1rem;">@Model.Note.Content</pre>
     </section>
 }
 else
@@ -36,4 +46,48 @@ else
     .min-height {
         height: calc(100vh - 40vh);
     }
+
+    #copyBtn:hover {
+        background-color: #eaeaea;
+    }
+
+    #copyBtn svg {
+        transition: all 0.2s ease-in-out;
+    }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const copyBtn = document.getElementById("copyBtn");
+        const noteContent = document.getElementById("noteContent");
+        const copyIcon = document.getElementById("copyIcon"); // This is the <svg> element
+        let originalIconHTML = copyIcon ? copyIcon.innerHTML : ''; // Store the original children of the SVG
+
+        if (copyBtn && noteContent && copyIcon) {
+            copyBtn.addEventListener("click", async () => {
+                const text = noteContent.innerText.trim();
+
+                if (!navigator.clipboard) {
+                    const tempInput = document.createElement("textarea");
+                    tempInput.value = text;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(tempInput);
+                } else {
+                    await navigator.clipboard.writeText(text);
+                }
+
+                // Change the icon to a checkmark
+                copyIcon.setAttribute("stroke", "green");
+                copyIcon.innerHTML = `<path d="M20 6L9 17l-5-5" />`;
+
+                setTimeout(() => {
+                    // Revert to the original icon
+                    copyIcon.setAttribute("stroke", "currentColor");
+                    copyIcon.innerHTML = originalIconHTML;
+                }, 1500);
+            });
+        }
+    });
+</script>
