@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Clipy** is a lightweight web application that allows users to quickly create, share, and view notes via unique URLs. Users can optionally choose a custom code/slug for their notes or allow Clipy to generate one automatically. Notes can be configured to **delete after being viewed**.
+**Clipy** is a lightweight web application that allows users to quickly create, share, and view notes via unique URLs. Users can optionally choose a custom code/slug for their notes or allow Clipy to generate one automatically. Notes can be configured to **delete after being viewed** or be **password protected** for extra privacy.
 
 Built with:
 
@@ -18,6 +18,9 @@ Built with:
 - **Instant Note Sharing** – Create a note and get a unique URL immediately.
 - **Custom Codes** – Optional user-defined URL codes.
 - **Self-Destructing Notes** – Notes can be marked to delete automatically after the first view.
+- **Password-Protected Notes** – Protect sensitive notes with a password before viewing.
+- **Copy-to-Clipboard** – Quickly copy note content with a single click; icon shows success (checkmark) or error (cross).
+- **Confirmation Before Viewing** – Prevent accidental deletion by requiring a confirmation before viewing self-destructing notes.
 - **Lightweight UI** – Clean and responsive interface with Pico.css.
 
 ---
@@ -43,7 +46,7 @@ cd clipy
 ```json
 {
   "ConnectionStrings": {
-    "GuestbookDb": "Data Source=clipy.db"
+    "ClipyDb": "Data Source=clipy.db"
   }
 }
 ```
@@ -67,9 +70,15 @@ Open your browser at `https://localhost:5001` (or the configured port).
 
 ## Usage
 
-1. **Add Note**: Navigate to `/AddNote`, enter your note, optional custom code, and optionally check “Delete after view”.
+1. **Add Note**: Navigate to `/AddNote`, enter your note, optional custom code, password (optional), and optionally check “Delete after view”.
 2. **Share Note**: Copy the generated URL and share it with anyone.
-3. **View Note**: Anyone with the URL can view the note. If “Delete after view” is enabled, the note will be removed after the first view.
+3. **View Note**: Anyone with the URL can view the note.
+
+   - If password protected, users must enter the correct password.
+   - If “Delete after view” is enabled, the note will be removed after the first view.
+   - Users see a **confirmation page** for self-destructing notes to avoid accidental deletion.
+   - A **copy-to-clipboard button** lets users quickly copy note content with visual feedback (checkmark for success, cross for failure).
+
 4. **Landing Page**: Provides an overview of the app and quick access to add a note.
 
 ---
@@ -83,6 +92,7 @@ Open your browser at `https://localhost:5001` (or the configured port).
 | Id              | int    | Primary key                            |
 | Content         | string | Note content                           |
 | Code            | string | Unique code or slug                    |
+| PasswordHash    | string | Hashed password (nullable)             |
 | DeleteAfterView | bool   | If true, note deletes after first view |
 | Viewed          | bool   | Indicates if the note was viewed       |
 | IsActive        | bool   | If false, the note is inactive/deleted |
