@@ -15,9 +15,17 @@
         <input type="hidden" name="Code" value="@Model.Code" />
 
         <label for="SubmittedPassword">Password</label>
-        <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password" required
-            autofocus aria-invalid="@(Model.PasswordAttempted.ToString().ToLower())"
-            aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
+        @if (Model.PasswordAttempted)
+        {
+            <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password" required
+                autofocus aria-invalid="@(Model.PasswordAttempted.ToString().ToLower())"
+                aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
+        }
+        else
+        {
+            <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password" required
+                autofocus aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
+        }
 
         @if (Model.PasswordAttempted)
         {
@@ -76,9 +84,17 @@ else
 
     <form method="get">
         <label for="Code">Note Code</label>
-        <input type="text" id="Code" name="code" placeholder="Enter your code" required
-            aria-invalid="@(Model.AttemptedAndNotFound.ToString().ToLower())"
-            aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
+        @if (Model.AttemptedAndNotFound)
+        {
+            <input type="text" id="Code" name="code" placeholder="Enter your code" required
+                aria-invalid="@(Model.AttemptedAndNotFound.ToString().ToLower())"
+                aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
+        }
+        else
+        {
+            <input type="text" id="Code" name="code" placeholder="Enter your code" required
+                aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
+        }
 
         @if (Model.AttemptedAndNotFound)
         {
