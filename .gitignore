@@ -1,0 +1,75 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xcscmblueprint
+
+# Swift Package Manager
+/.build/
+/Packages/
+/Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Archives
+*.xcarchive
+
+# Other
+*.log
+*.swp
+# .NET build output
+bin/
+obj/
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+# ASP.NET temporary files
+*.vs/
+# NuGet packages
+*.nupkg
+packages/
+# Database files
+*.mdf
+*.ldf
+*.sqlite
+*.db
+*.bak
+# Publish output
+publish/
+# Configuration files
+appsettings.Development.json
+# Rider IDE
+.idea/
+# Visual Studio Code
+.vscode/
+# Environment files
+.env
+# Node modules (if using Node.js)
+node_modules/
+*.swo
+.idea/
+.vscode/
+.env
+node_modules/
+output
+*.db

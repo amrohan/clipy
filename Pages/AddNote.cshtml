@@ -1,0 +1,222 @@
+@page
+@model AddNoteModel
+@{
+    ViewData["Title"] = "Add Note";
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p class="error-message">@Model.ErrorMessage</p>
+}
+
+@if (Model.NoteUrl != null)
+{
+    <hgroup>
+        <h2>Note Created!</h2>
+        <p>Your secure note URL is ready to be shared.</p>
+    </hgroup>
+
+    <div style="position: relative;">
+        <button id="copyBtn" title="Copy note" class="secondary outline"
+                style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.4rem; line-height: 0;">
+            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+        </button>
+
+        <pre><code id="noteContent">@Model.NoteUrl</code></pre>
+    </div>
+
+    <a href="/" role="button" class="contrast" style="margin-top: 1rem;">Create a New Note</a>
+
+    <div id="shareMenu" class="share-menu" style="display: none;">
+        <button id="shareBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                <polyline points="16 6 12 2 8 6"></polyline>
+                <line x1="12" y1="2" x2="12" y2="15"></line>
+            </svg>
+            <span>Share</span>
+        </button>
+    </div>
+}
+else
+{
+    <hgroup>
+        <h2>Add a Note</h2>
+        <p>Create a secure note that you can share with others.</p>
+    </hgroup>
+
+    <form method="post" id="noteForm">
+        <label for="NoteContent">Note Content</label>
+        <textarea id="NoteContent" name="NoteContent" required placeholder="Type your note here..."
+                  rows="7">@Model.NoteContent</textarea>
+        <span asp-validation-for="NoteContent" class="error-message"></span>
+
+        <details style="margin-top:0.5rem;">
+            <summary>Advanced Options</summary>
+            <div class="grid">
+                <label for="Code">
+                    Custom Code (optional)
+                    <input type="text" id="Code" name="Code" maxlength="10" placeholder="e.g., meeting-notes"
+                           value="@Model.Code">
+                </label>
+                <label for="Password">
+                    Password (optional)
+                    <input type="password" id="Password" name="Password" placeholder="Protect with a password">
+                </label>
+            </div>
+
+            <label for="ExpiryOption">Auto-delete note after:</label>
+            <div class="grid">
+                <select id="ExpiryOption" name="ExpiryOption">
+                    <option value="never" selected>Never</option>
+                    <option value="1h">1 Hour</option>
+                    <option value="24h">24 Hours</option>
+                    <option value="7d">7 Days</option>
+                    <option value="custom">Custom Date</option>
+                </select>
+
+                <input type="date" id="CustomExpiryDate" name="CustomExpiryDate" style="display: none;"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")">
+            </div>
+            <span asp-validation-for="CustomExpiryDate" class="error-message"></span>
+
+            <label for="DeleteAfterView">
+                <input type="checkbox" id="DeleteAfterView" name="DeleteAfterView" value="true"
+                       @(Model.DeleteAfterView ? "checked" : "")>
+                Delete after first view
+            </label>
+        </details>
+
+        <button type="submit" id="submitBtn" aria-busy="false">Save Note</button>
+    </form>
+}
+
+<style>
+    .error-message {
+        color: red;
+        font-size: 0.875em;
+        margin-top: -0.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .share-menu {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+    }
+
+    .share-menu button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    #submitBtn {
+        margin-top: 0.5rem;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('noteForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const expirySelect = document.getElementById('ExpiryOption');
+            const customDateInput = document.getElementById('CustomExpiryDate');
+
+            // Show custom date input if selected
+            if (expirySelect && customDateInput) {
+                expirySelect.addEventListener('change', () => {
+                    const isCustom = expirySelect.value === 'custom';
+                    customDateInput.style.display = isCustom ? 'block' : 'none';
+                    customDateInput.required = isCustom;
+                });
+            }
+
+            // Show loading state on submit
+            if (form && submitBtn) {
+                form.addEventListener('submit', () => {
+                    if (form.checkValidity()) {
+                        submitBtn.disabled = true;
+                        submitBtn.setAttribute('aria-busy', 'true');
+                        submitBtn.textContent = 'Saving...';
+                    }
+                });
+            }
+
+            // Copy URL button
+            const copyBtn = document.getElementById('copyBtn');
+            const noteContent = document.getElementById('noteContent');
+            const copyIcon = document.getElementById('copyIcon');
+            const originalIconHTML = copyIcon?.innerHTML;
+
+            if (copyBtn && noteContent) {
+                copyBtn.addEventListener('click', () => {
+                    const text = noteContent.innerText || noteContent.textContent || '';
+                    if (!text) return;
+
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(text).then(() => showSuccess()).catch(() => fallbackCopy(text));
+                    } else fallbackCopy(text);
+                });
+            }
+
+            function fallbackCopy(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'absolute';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showSuccess();
+                } catch {
+                }
+                document.body.removeChild(textArea);
+            }
+
+            function showSuccess() {
+                if (!copyIcon) return;
+                copyIcon.setAttribute('stroke', 'green');
+                copyIcon.innerHTML = `<path d="M20 6L9 17l-5-5" />`;
+                setTimeout(() => {
+                    if (copyIcon) {
+                        copyIcon.setAttribute('stroke', 'currentColor');
+                        if (originalIconHTML !== null) copyIcon.innerHTML = originalIconHTML;
+                    }
+                }, 1500);
+            }
+
+            // Show share button if Web Share API is available
+            const shareMenu = document.getElementById('shareMenu');
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareMenu && shareBtn && navigator.share && noteContent) {
+                shareMenu.style.display = 'block';
+                shareBtn.addEventListener('click', async () => {
+                    try {
+                        await navigator.share({
+                            title: 'A Secure Note',
+                            text: 'Here is a secure note I created for you:',
+                            url: noteContent.innerText || window.location.href
+                        });
+                    } catch {
+                    }
+                });
+            }
+            
+
+        });
+    </script>
+}

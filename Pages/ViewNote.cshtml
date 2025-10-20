@@ -1,0 +1,225 @@
+@page
+@model ViewNoteModel
+@{
+    ViewData["Title"] = "View Note";
+}
+
+<section style="min-height:70dvh">
+    @if (Model.RequiresPassword)
+    {
+        <hgroup>
+            <h2>Password Required</h2>
+            <p>This note is protected. Please enter the password to view it.</p>
+        </hgroup>
+
+        <form method="post" asp-page-handler="Password" id="passwordForm">
+            <input type="hidden" name="Code" value="@Model.Code"/>
+
+            <label for="SubmittedPassword">Password</label>
+            @if (Model.PasswordAttempted)
+            {
+                <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password"
+                       required
+                       autofocus aria-invalid="@(Model.PasswordAttempted.ToString().ToLower())"
+                       aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
+            }
+            else
+            {
+                <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password"
+                       required
+                       aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
+            }
+
+            @if (Model.PasswordAttempted)
+            {
+                <small id="invalid-helper"> Incorrect password. Please try again.</small>
+            }
+
+            <button type="submit" id="unlockBtn">Unlock Note</button>
+        </form>
+    }
+    else if (Model.ShowConfirmation)
+    {
+        <hgroup>
+            <h2>Confirm View</h2>
+            <p style="color:rgb(213, 51, 51)"><strong>⚠ This note will be permanently deleted immediately after you view
+                    it.</strong></p>
+        </hgroup>
+        <p>
+            To make sure you don’t open it by mistake, please confirm that you really want to view the note.
+            Once you open it, the note cannot be recovered or viewed again.
+        </p>
+        <form method="post" asp-page-handler="Confirm" id="confirmForm">
+            <input type="hidden" name="Code" value="@Model.Code"/>
+            <button type="submit" id="confirmBtn">Show Me the Note</button>
+        </form>
+    }
+    else if (Model.Note != null)
+    {
+        <hgroup>
+            <h2>Share Note</h2>
+            @if (Model.JustViewedDeletableNote)
+            {
+                <p style="color:rgb(213, 51, 51)" role="alert">⚠ This note will be permanently deleted if you refresh or
+                    leave this page.</p>
+            }
+        </hgroup>
+
+        <div style="position: relative;">
+            <button id="downloadBtn" title="Download Note" class="secondary outline"
+                    style="position: absolute; top: 0.75rem; right: 3rem; padding: 0.4rem; line-height: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </button>
+            <button id="copyBtn" title="Copy note" class="secondary outline"
+                    style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.4rem; line-height: 0;">
+                <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     viewBox="0 0 24 24">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </button>
+
+            <pre><code id="noteContent">@Model.Note.Content</code></pre>
+        </div>
+    }
+    else
+    {
+        <hgroup>
+            <h2>Find Your Note</h2>
+            <p>Enter your note code to view it:</p>
+        </hgroup>
+
+        <form method="get" id="codeForm">
+            <label for="Code">Note Code</label>
+            @if (Model.AttemptedAndNotFound)
+            {
+                <input type="text" id="Code" name="code" placeholder="Enter your code" required
+                       aria-invalid="@(Model.AttemptedAndNotFound.ToString().ToLower())"
+                       aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
+            }
+            else
+            {
+                <input type="text" id="Code" name="code" placeholder="Enter your code" required
+                       aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
+            }
+
+            @if (Model.AttemptedAndNotFound)
+            {
+                <small id="invalid-helper"> Note not found. Please check your code.</small>
+            }
+
+            <button type="submit" id="viewCodeBtn">View Note</button>
+        </form>
+    }
+</section>
+
+<section>
+    <footer role="contentinfo" style="text-align:center; font-size:0.95rem; opacity:0.85; margin-top:4rem">
+        <p>
+            &copy; 2025 — <strong>Clipy</strong> —
+            Notes made fun, not creepy.<br>
+            <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener"
+               style="display:inline-flex; align-items:end; gap:4px;">
+                GitHub
+            </a> ·
+            <a asp-page="/Privacy">Privacy</a> ·
+            Built by <a href="https://amrohan.in" target="_blank" rel="noopener">@@amrohan</a>
+        </p>
+    </footer>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const copyBtn = document.getElementById("copyBtn");
+            const noteContent = document.getElementById("noteContent");
+            const copyIcon = document.getElementById("copyIcon");
+            const originalIconHTML = copyIcon?.innerHTML || '';
+
+            if (copyBtn && noteContent) {
+                copyBtn.addEventListener("click", () => {
+                    const text = noteContent.innerText;
+
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(text).then(() => showSuccess());
+                    } else {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = text;
+                        textArea.style.position = "absolute";
+                        textArea.style.left = "-9999px";
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        try {
+                            document.execCommand('copy');
+                            showSuccess();
+                        } catch {
+                        }
+                        document.body.removeChild(textArea);
+                    }
+                });
+            }
+
+            function showSuccess() {
+                if (!copyIcon) return;
+                copyIcon.setAttribute("stroke", "green");
+                copyIcon.innerHTML = `<path d="M20 6L9 17l-5-5" />`;
+                setTimeout(() => {
+                    copyIcon.setAttribute("stroke", "currentColor");
+                    copyIcon.innerHTML = originalIconHTML;
+                }, 1500);
+            }
+
+            const downloadBtn = document.getElementById("downloadBtn");
+            if (downloadBtn && noteContent) {
+                downloadBtn.addEventListener("click", () => {
+                    const blob = new Blob([noteContent.innerText], {type: "text/plain;charset=utf-8"});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `note-${new Date().getTime()}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
+
+            // Loading states for forms
+            const passwordForm = document.getElementById('passwordForm');
+            const unlockBtn = document.getElementById('unlockBtn');
+            if (passwordForm && unlockBtn) {
+                passwordForm.addEventListener('submit', () => {
+                    unlockBtn.disabled = true;
+                    unlockBtn.textContent = 'Checking...';
+                });
+            }
+
+            const confirmForm = document.getElementById('confirmForm');
+            const confirmBtn = document.getElementById('confirmBtn');
+            if (confirmForm && confirmBtn) {
+                confirmForm.addEventListener('submit', () => {
+                    confirmBtn.disabled = true;
+                    confirmBtn.textContent = 'Loading Note...';
+                });
+            }
+
+            const codeForm = document.getElementById('codeForm');
+            const viewCodeBtn = document.getElementById('viewCodeBtn');
+            if (codeForm && viewCodeBtn) {
+                codeForm.addEventListener('submit', () => {
+                    viewCodeBtn.disabled = true;
+                    viewCodeBtn.textContent = 'Finding...';
+                });
+            }
+
+
+        });
+    </script>
+}
