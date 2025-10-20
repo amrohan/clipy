@@ -14,6 +14,16 @@ It’s perfect for sharing quick thoughts, confidential info, or one-time secret
 
 ---
 
+## Demo
+
+[Live Demo](https://clipy.amrohan.in)
+
+| Home | Add Note | View Note |
+|------|----------|-----------|
+| <img src="https://github.com/user-attachments/assets/51d3006d-7a54-4ee3-bbea-7ec8970a472b" width="250" /> | <img src="https://github.com/user-attachments/assets/d7827163-0cff-4ca4-bdca-d3e1d80c1ae2" width="250" /> | <img src="https://github.com/user-attachments/assets/bf060f67-31c2-408b-8c6b-b6735bc26bf5" width="250" /> |
+
+---
+
 ## Key Features
 
 ### 1. Instant Note Sharing
@@ -48,13 +58,6 @@ It’s a handy tool for developers, teams, or anyone who needs to quickly share 
 
 ---
 
-## Demo
-
-You can include a short demo or walkthrough video of Clipy here:
-
-**▶ Watch the Demo Video**
-
----
 
 ## How It Works
 
