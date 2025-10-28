@@ -7,6 +7,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=clipy.db"));
 
+builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace clipy.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251024144527_add rest encryption for notes")]
+    partial class addrestencryptionfornotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -42,13 +45,13 @@ namespace clipy.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsEncrypted")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Viewed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isEncrypted")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

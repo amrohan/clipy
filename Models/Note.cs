@@ -13,4 +13,5 @@ public class Note
     public bool Viewed { get; set; } = false;
     public bool IsActive { get; set; } = true;
     public DateTime CreatedDateUtc { get; set; } = DateTime.UtcNow;
+    public bool IsEncrypted { get; set; } = false;
 }

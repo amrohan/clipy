@@ -18,10 +18,9 @@
 
     <div style="position: relative;">
         <button id="copyBtn" title="Copy note" class="secondary outline"
-                style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.4rem; line-height: 0;">
-            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 viewBox="0 0 24 24">
+            style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.4rem; line-height: 0;">
+            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
@@ -35,7 +34,7 @@
     <div id="shareMenu" class="share-menu" style="display: none;">
         <button id="shareBtn">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
                 <polyline points="16 6 12 2 8 6"></polyline>
                 <line x1="12" y1="2" x2="12" y2="15"></line>
@@ -54,7 +53,7 @@ else
     <form method="post" id="noteForm">
         <label for="NoteContent">Note Content</label>
         <textarea id="NoteContent" name="NoteContent" required placeholder="Type your note here..."
-                  rows="7">@Model.NoteContent</textarea>
+        rows="7">@Model.NoteContent</textarea>
         <span asp-validation-for="NoteContent" class="error-message"></span>
 
         <details style="margin-top:0.5rem;">
@@ -63,7 +62,7 @@ else
                 <label for="Code">
                     Custom Code (optional)
                     <input type="text" id="Code" name="Code" maxlength="10" placeholder="e.g., meeting-notes"
-                           value="@Model.Code">
+                        value="@Model.Code">
                 </label>
                 <label for="Password">
                     Password (optional)
@@ -82,13 +81,13 @@ else
                 </select>
 
                 <input type="date" id="CustomExpiryDate" name="CustomExpiryDate" style="display: none;"
-                       min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                    min="@DateTime.Today.ToString("yyyy-MM-dd")">
             </div>
             <span asp-validation-for="CustomExpiryDate" class="error-message"></span>
 
             <label for="DeleteAfterView">
-                <input type="checkbox" id="DeleteAfterView" name="DeleteAfterView" value="true"
-                       @(Model.DeleteAfterView ? "checked" : "")>
+                <input type="checkbox" id="DeleteAfterView" name="DeleteAfterView" value="true" @(Model.DeleteAfterView ?
+                                                                                                                "checked" : "")>
                 Delete after first view
             </label>
         </details>
@@ -215,7 +214,7 @@ else
                     }
                 });
             }
-            
+
 
         });
     </script>

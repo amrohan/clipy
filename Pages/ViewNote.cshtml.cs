@@ -2,10 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-public class ViewNoteModel : PageModel
+public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService) : PageModel
 {
-    private readonly AppDbContext _db;
-    public ViewNoteModel(AppDbContext db) => _db = db;
 
     public Note? Note { get; set; }
     public bool ShowConfirmation { get; set; }
@@ -26,7 +24,7 @@ public class ViewNoteModel : PageModel
             return Page();
         }
 
-        var note = await _db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
+        var note = await db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
 
 
         note = await CleanupAndValidateNoteAsync(note);
@@ -51,17 +49,21 @@ public class ViewNoteModel : PageModel
             return Page();
         }
 
+        if (note.IsEncrypted)
+        {
+            note.Content = encryptionService.Decrypt(note.Content);
+        }
 
         Note = note;
         return Page();
     }
     public async Task<IActionResult> OnPostConfirmAsync()
     {
-        var note = await _db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
+        var note = await db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
         if (note != null && note.DeleteAfterView && string.IsNullOrEmpty(note.Password))
         {
             note.Viewed = true;
-            await _db.SaveChangesAsync();
+            await db.SaveChangesAsync();
             JustViewedDeletableNote = true;
             Note = note;
         }
@@ -75,7 +77,7 @@ public class ViewNoteModel : PageModel
     {
         if (string.IsNullOrEmpty(SubmittedPassword)) return Page();
 
-        var note = await _db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
+        var note = await db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
         note = await CleanupAndValidateNoteAsync(note);
 
         if (note == null || string.IsNullOrEmpty(note.Password))
@@ -97,8 +99,13 @@ public class ViewNoteModel : PageModel
         if (note.DeleteAfterView)
         {
             note.Viewed = true;
-            await _db.SaveChangesAsync();
+            await db.SaveChangesAsync();
             JustViewedDeletableNote = true;
+        }
+
+        if (note.IsEncrypted)
+        {
+            note.Content = encryptionService.Decrypt(note.Content);
         }
 
         Note = note;
@@ -124,8 +131,8 @@ public class ViewNoteModel : PageModel
 
         if (shouldDelete)
         {
-            _db.Notes.Remove(note);
-            await _db.SaveChangesAsync();
+            db.Notes.Remove(note);
+            await db.SaveChangesAsync();
             return null;
         }
 

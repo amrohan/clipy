@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace clipy.Pages;
 
-public class AddNoteModel(AppDbContext db) : PageModel
+public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService) : PageModel
 {
     [BindProperty, Required(ErrorMessage = "Note content is required.")]
     public required string NoteContent { get; set; }
@@ -73,13 +73,16 @@ public class AddNoteModel(AppDbContext db) : PageModel
                 break;
         }
 
+        string encyptedContent = encryptionService.Encrypt(NoteContent);
+
         var note = new Note
         {
-            Content = NoteContent,
+            Content = encyptedContent,
             Code = code,
             Password = hashedPassword,
             DeleteAfterView = DeleteAfterView,
-            ExpiryDateUtc = expiryDateUtc
+            ExpiryDateUtc = expiryDateUtc,
+            IsEncrypted = true
         };
 
         db.Notes.Add(note);
