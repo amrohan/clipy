@@ -15,14 +15,12 @@ Each note gets its own secure URL, which you can share directly. Notes can even 
 
 It’s perfect for sharing quick thoughts, confidential info, or one-time secrets like passwords.
 
-
-
 ## Demo
 
 | | |
 |---|---|
-| <img width="1582" height="954" alt="Screenshot 1" src="https://github.com/user-attachments/assets/831b1dfb-5d66-4911-9528-a020a4b6fabc" /> | <img width="1582" height="954" alt="Screenshot 2" src="https://github.com/user-attachments/assets/d226ed30-f879-43f2-8f91-9488a9e549a6" /> |
-| <img width="1582" height="954" alt="Screenshot 3" src="https://github.com/user-attachments/assets/11a4a0f8-11e6-4cf8-9fae-f326515fe93b" /> | <img width="1582" height="954" alt="Screenshot 4" src="https://github.com/user-attachments/assets/42f886f4-4138-425d-a85a-23520e94a4fc" /> |
+| <img width="1582" height="954" alt="Home page" src="https://github.com/user-attachments/assets/bd586712-ee58-4826-a392-09f68f18d08e" /> | <img width="1582" height="954" alt="Add page" src="https://github.com/user-attachments/assets/d226ed30-f879-43f2-8f91-9488a9e549a6" /> |
+| <img width="1582" height="954" alt="Add with advanced options" src="https://github.com/user-attachments/assets/11a4a0f8-11e6-4cf8-9fae-f326515fe93b" /> | <img width="1582" height="954" alt="View note" src="https://github.com/user-attachments/assets/42f886f4-4138-425d-a85a-23520e94a4fc" /> |
 
 
 
