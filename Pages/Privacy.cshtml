@@ -5,9 +5,9 @@
 }
 
 <main>
-    <header style="margin-bottom: 2rem;">
+    <header style="text-align:center;margin-bottom:4rem;">
         <h1>@ViewData["Title"]</h1>
-        <p class="lead">Because even note-sharing apps need rules </p>
+        <p class="lead">Because even note-sharing apps need rules</p>
     </header>
 
     <section>
@@ -35,28 +35,16 @@
             Refreshing the page means it's gone.
         </p>
 
-        <h2>5. Cookies</h2>
+        <h2>5. Encryption</h2>
         <p>
-            We don't use cookies for spying — only the ones necessary to keep your session alive.
-            Feel free to dunk them in milk 🍪.
+            All notes are encrypted at rest using strong AES-256 encryption. This means that even if someone
+            got access to the database, your note content would still look like unreadable gibberish.
+            You can also use your own custom encryption key for extra privacy — we never see it.
+        </p>
+
+        <h2>6. Cookies</h2>
+        <p>
+            We don't use cookies feel free to dunk them in milk 🍪.
         </p>
     </section>
 </main>
-
-<style>
-    main.container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-        line-height: 1.6;
-    }
-
-    h2 {
-        margin-top: 2rem;
-        font-size: 1.3rem;
-    }
-
-    p {
-        margin-bottom: 1rem;
-    }
-</style>
