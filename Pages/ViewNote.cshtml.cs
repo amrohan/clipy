@@ -20,14 +20,9 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
     public async Task<IActionResult> OnGetAsync()
     {
         if (string.IsNullOrWhiteSpace(Code))
-        {
             return Page();
-        }
 
         var note = await db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
-
-
-        note = await CleanupAndValidateNoteAsync(note);
 
         if (note == null)
         {
@@ -35,6 +30,12 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
             return Page();
         }
 
+        note = await CleanupAndValidateNoteAsync(note);
+        if (note == null)
+        {
+            AttemptedAndNotFound = true;
+            return Page();
+        }
 
         if (!string.IsNullOrEmpty(note.Password))
         {
@@ -42,21 +43,21 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
             return Page();
         }
 
-
         if (note.DeleteAfterView && !note.Viewed)
         {
             ShowConfirmation = true;
+            if (note.IsEncrypted)
+                note.Content = encryptionService.Decrypt(note.Content);
             return Page();
         }
 
         if (note.IsEncrypted)
-        {
             note.Content = encryptionService.Decrypt(note.Content);
-        }
 
         Note = note;
         return Page();
     }
+
     public async Task<IActionResult> OnPostConfirmAsync()
     {
         var note = await db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
