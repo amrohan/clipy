@@ -11,6 +11,7 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
     public bool RequiresPassword { get; set; }
     public bool PasswordAttempted { get; set; }
     public bool AttemptedAndNotFound { get; set; }
+    public int CurrentYear { get; private set; }
 
     [BindProperty(SupportsGet = true)]
     public string? Code { get; set; }
@@ -19,6 +20,8 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
     public string? SubmittedPassword { get; set; }
     public async Task<IActionResult> OnGetAsync()
     {
+        CurrentYear = DateTime.Now.Year;
+        
         if (string.IsNullOrWhiteSpace(Code))
             return Page();
 
