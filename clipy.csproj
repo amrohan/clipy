@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -17,6 +17,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="output\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="output\appsettings.json" />
+    <_ContentIncludedByDefault Remove="output\clipy.staticwebassets.endpoints.json" />
+    <_ContentIncludedByDefault Remove="output\output\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="output\output\appsettings.json" />
+    <_ContentIncludedByDefault Remove="output\output\clipy.staticwebassets.endpoints.json" />
   </ItemGroup>
 
 </Project>

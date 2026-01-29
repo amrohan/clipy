@@ -1,101 +1,151 @@
 # Clipy — Instant Note Sharing Made Simple
 
-[![Built with .NET](https://img.shields.io/badge/Built_with-.NET_9-blue?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![Built with .NET](https://img.shields.io/badge/Built_with-.NET_10-blue?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Security](https://img.shields.io/badge/Encryption-AES--256-informational)](#security-and-privacy)
 
-**Clipy** is a fast, minimal web app that lets you share notes instantly through unique links.  
-No accounts, no clutter just type a note, generate a link, and share it with anyone.
+**Clipy** is a fast, minimal web app for sharing text securely and effortlessly.  
+Create encrypted notes with shareable links — or spin up live, temporary rooms for real-time collaboration.
 
+No accounts. No clutter. Just share what you need, when you need it.
+
+---
 
 ## What Is Clipy?
 
-Clipy makes it effortless to send short notes, private messages, or temporary text online.  
-Each note gets its own secure URL, which you can share directly. Notes can even be set to disappear after being viewed once, ensuring complete privacy.
+Clipy helps you share text in two simple ways:
 
-It’s perfect for sharing quick thoughts, confidential info, or one-time secrets like passwords.
+- **Secure Notes** — link-based, encrypted, and optionally self-destructing
+- **Live Rooms** — real-time shared text that expires automatically
+
+Whether you’re sharing a password, a one-time message, or collaborating live for a few minutes, Clipy keeps things fast, private, and disposable.
+
+---
 
 ## Demo
 
-| | |
-|---|---|
-| <img width="1582" height="954" alt="Home page" src="https://github.com/user-attachments/assets/bd586712-ee58-4826-a392-09f68f18d08e" /> | <img width="1582" height="954" alt="Add page" src="https://github.com/user-attachments/assets/d226ed30-f879-43f2-8f91-9488a9e549a6" /> |
+| Live                                                                                                                                                    |                                                                                                                                         |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| <img width="1582" height="954" alt="Home page" src="https://github.com/user-attachments/assets/bd586712-ee58-4826-a392-09f68f18d08e" />                 | <img width="1582" height="954" alt="Add page" src="https://github.com/user-attachments/assets/d226ed30-f879-43f2-8f91-9488a9e549a6" />  |
 | <img width="1582" height="954" alt="Add with advanced options" src="https://github.com/user-attachments/assets/11a4a0f8-11e6-4cf8-9fae-f326515fe93b" /> | <img width="1582" height="954" alt="View note" src="https://github.com/user-attachments/assets/42f886f4-4138-425d-a85a-23520e94a4fc" /> |
+   
 
-
+---
 
 ## Key Features
 
-### 1. Instant Note Sharing
-Write your note and instantly get a unique shareable link. No sign-up, no setup — just create and share.
+###  Secure Notes (Link-Based)
 
-### 2. Self-Destructing Notes
-You can choose to delete notes automatically after they’re viewed once.  
-Before viewing, Clipy shows a confirmation screen to prevent accidental deletion.
+#### 1. Instant Note Sharing
+Write a note and instantly get a unique shareable link.  
+No sign-up, no setup — just create and share.
 
-### 3. Password Protection
-Protect sensitive notes with a password. Only users with the correct password can unlock and read the note.
+#### 2. Self-Destructing Notes
+Optionally delete notes automatically after they’re viewed once.  
+A confirmation screen prevents accidental deletion.
 
-### 4. AES-256 Encryption at Rest
-All notes are securely encrypted at rest using AES-256 encryption, ensuring that even if the database is accessed, note contents remain unreadable.  
-Users can also optionally provide their own custom encryption key for additional privacy.  
-Clipy automatically derives a strong 256-bit AES key from any provided key using SHA-256 hashing.
+#### 3. Password Protection
+Protect notes with a password. Only users with the correct password can view them.
 
-### 5. Custom Codes
-Want a cleaner or memorable link? Add your own short code (slug) instead of the random one generated automatically.
+#### 4. AES-256 Encryption at Rest
+All notes are encrypted at rest using **AES-256**.  
+Users can optionally provide a custom encryption key, which Clipy safely derives into a strong AES key using **SHA-256**.
 
-### 6. Expiration Options
-Choose how long a note should stay active — for an hour, a day, a week, or a custom expiry date. Notes automatically expire once their time runs out.
+#### 5. Custom Codes
+Use your own short, memorable code instead of a randomly generated one.
 
-### 7. Copy-to-Clipboard
-Each note comes with a simple “copy” button that lets you instantly copy the text to your clipboard.  
-You’ll get visual feedback when it’s successful.
+#### 6. Expiration Options
+Set notes to expire after a fixed duration or a custom date.  
+Expired notes are deleted automatically.
 
-### 8. Clean and Lightweight Interface
-Built with **Pico.css**, the UI is fast, responsive, and distraction-free — optimized for both desktop and mobile.
+#### 7. Copy-to-Clipboard
+Quickly copy note contents with visual feedback.
 
+---
+
+###  Live Rooms (Real-Time)
+
+#### 8. Live Text Sharing
+Create a room and share a short room code.  
+Everyone in the room sees updates instantly as you type.
+
+#### 9. No Storage, No History
+Room content lives only in memory and is never written to disk.
+
+#### 10. Automatic Room Expiry
+Rooms automatically expire after inactivity, ensuring nothing lingers longer than necessary.
+
+#### 11. No Login Required
+Anyone with the room code can join instantly — perfect for quick collaboration or temporary sharing.
+
+---
+
+## When Should I Use Notes vs Rooms?
+
+| Use Case                | Notes | Rooms |
+|-------------------------|-------|-------|
+| One-time secrets        | ✅     | ❌     |
+| Encrypted storage       | ✅     | ❌     |
+| Share via link          | ✅     | ❌     |
+| Real-time collaboration | ❌     | ✅     |
+| Temporary brainstorming | ❌     | ✅     |
+| No persistence          | ❌     | ✅     |
+
+---
 
 ## Why Use Clipy?
 
-Clipy is designed for speed, simplicity, and privacy.  
-It’s a handy tool for developers, teams, or anyone who needs to quickly share text without leaving traces or signing up for anything.
+Clipy is built for speed, simplicity, and privacy.
 
+- No accounts
+- No tracking
+- No unnecessary features
+- Everything expires or deletes when it should
+
+It’s ideal for developers, teams, and anyone who needs to share text without leaving traces.
+
+---
 
 ## How It Works
 
-1. **Create a Note** – Write your message and choose any extra options (password, expiry, encryption key, or delete-after-view).  
-2. **Share the Link** – Copy the generated link and send it to anyone.  
-3. **View Securely** – The recipient can open the link to view the note.  
-   - If it’s password-protected, they’ll be prompted to enter the password.  
-   - If it’s set to self-destruct, it will automatically delete after viewing.  
-   - All note contents remain encrypted at rest until they are viewed.
+### Secure Notes
+1. **Create a Note** — Write your message and choose options (password, expiry, encryption key, delete-after-view).
+2. **Share the Link** — Copy the generated URL.
+3. **View Securely** — Notes decrypt only when accessed and are deleted based on your settings.
 
-That’s it — no accounts, no history, just simple note sharing.
+### Live Rooms
+1. **Create or Join a Room** — Enter or generate a room code.
+2. **Share the Code** — Others join instantly.
+3. **Type Together** — Everyone sees updates live.
+4. **Room Expires** — Automatically cleaned up after inactivity.
 
-
+---
 
 ## Technology Behind Clipy
 
-- Built using **ASP.NET Core 9**
-- Uses **Pico.css** for a minimal, modern look
-- Stores notes securely in **SQLite** or **SQL Server**
-- AES-256 encryption for all notes at rest
-- Optional user-provided encryption key
-- Passwords are safely hashed before saving
+- Built with **ASP.NET Core 9**
+- **SignalR** for real-time rooms
+- **Pico.css** for a clean, responsive UI
+- **SQLite** or **SQL Server** for note storage
+- AES-256 encryption for notes at rest
+- Passwords hashed securely before storage
 
+---
 
 ## Security and Privacy
 
-- Notes are encrypted at rest using **AES-256**.  
-- User-provided encryption keys are hashed securely with **SHA-256**.  
-- Passwords are hashed before storage — never stored in plain text.  
-- Self-destructing and expired notes are deleted automatically.  
-- No analytics, ads, or tracking scripts.
+- AES-256 encryption for all stored notes
+- Optional user-provided encryption keys
+- Passwords are hashed — never stored in plain text
+- Expired and self-destructed notes are deleted automatically
+- Rooms are in-memory only
+- No analytics, ads, or tracking
 
+---
 
 ## Contact
 
-For questions, feedback, or feature suggestions, reach out to:
+For questions, feedback, or feature suggestions:
 
 **Rohan Salunkhe**  
 📧 [contact@amrohan.in](mailto:contact@amrohan.in)

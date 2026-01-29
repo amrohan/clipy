@@ -1,108 +1,126 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Clipy - Instant Notes Sharing";
+    ViewData["Title"] = "Clipy - Secure Notes & Live Rooms";
 }
 
 <main>
     <!-- Hero Section -->
     <section style="margin-top: 1rem">
         <header>
-            <h1>Welcome to
-                <mark>Clipy</mark>
+            <h1>
+                Welcome to <mark>Clipy</mark>
             </h1>
-            <h4>Instant, Secure, Encrypted Note Sharing</h4>
+
+            <h4>Secure notes · Live rooms · No accounts</h4>
+
             <p class="lead">
-                Share your notes instantly with a simple URL — no signup, no clutter, just notes.
+                Clipy helps you share information quickly and safely — whether it’s a secure note
+                or a live, temporary room for real-time collaboration.
                 <br><br>
-                Create a quick note, share the link, and let others view it right away.
-                You can even mark notes to self-destruct after being viewed once for extra privacy.
-                Perfect for sharing temporary passwords, messages, or short snippets securely.
+                Choose what fits your need: share a private note with a link,
+                or spin up a live room and type together instantly.
             </p>
         </header>
 
         <!-- CTA Buttons -->
         <div class="button-group">
-            <a href="/AddNote" role="button" style="width:100%">Create Note</a>
-            <a href="/ViewNote" role="button" class="contrast" style="width:100%">View Note</a>
+            <a href="/AddNote" role="button" style="width:100%">
+                Create Secure Note
+            </a>
+
+            <a href="/Room" role="button" class="contrast" style="width:100%">
+                Start Live Room
+            </a>
+
+            <a href="/ViewNote" role="button" class="secondary" style="width:100%">
+                View Note
+            </a>
         </div>
+    </section>
+
+    <!-- What Can You Do -->
+    <section style="margin-top:4rem;">
+        <h4>What You Can Do with Clipy</h4>
+
+        <details open>
+            <summary> Secure Notes (Link-based)</summary>
+            <p>
+                Create encrypted notes and share them using a unique URL.
+                Perfect for passwords, one-time messages, or sensitive text.
+                Notes can auto-delete after being viewed or after a set expiry time.
+            </p>
+        </details>
+
+        <details>
+            <summary> Live Rooms (Real-time)</summary>
+            <p>
+                Start a live room and share the room code with others.
+                Everyone in the room sees updates instantly as you type.
+                No login, no storage — rooms automatically expire after inactivity.
+            </p>
+        </details>
     </section>
 
     <!-- How It Works -->
     <section style="margin-top:4rem;">
         <h4>How It Works</h4>
 
-        <details open>
-            <summary>1. Write your note</summary>
+        <details>
+            <summary>1. Choose Notes or Rooms</summary>
             <p>
-                Go to the “Add Note” page, type your message, and choose whether to delete it after one view for
-                privacy.
+                Use <strong>Notes</strong> for secure, encrypted sharing via a link.
+                Use <strong>Rooms</strong> when you need live, temporary collaboration.
             </p>
         </details>
 
         <details>
-            <summary>2. Get your shareable link</summary>
+            <summary>2. Share Instantly</summary>
             <p>
-                Once you save your note, you’ll get a unique URL. Share it with anyone — no login required.
-            </p>
-        </details>
-        <details>
-            <summary>3. Notes are encrypted at rest</summary>
-            <p>
-                All notes are securely encrypted before being saved to the database.
-                Even if someone gains access to the database, your note content remains protected.
+                Notes give you a private URL.
+                Rooms give you a short room code.
+                Share either one — no signup required.
             </p>
         </details>
 
         <details>
-            <summary>4. View securely</summary>
+            <summary>3. Built-in Privacy</summary>
             <p>
-                Anyone with the link can view the note. If you enabled “Delete after view,” the note is permanently
-                deleted after it’s read once.
+                Notes are encrypted at rest and can self-destruct.
+                Rooms live only in memory and automatically expire after inactivity.
             </p>
         </details>
 
         <details>
-            <summary>5. Password Protection</summary>
+            <summary>4. Nothing Lingers</summary>
             <p>
-                Add an extra layer of security by setting a password. Only users who know the password can access the
-                note.
-                You can also enable “Delete after view” to make the note self-destruct immediately after being read —
-                ensuring it can’t be accessed again.
+                Notes expire based on your settings.
+                Rooms disappear automatically when no one is active.
+                No clutter. No history. No tracking.
             </p>
         </details>
 
         <details>
-            <summary>6. Expiry Date</summary>
+            <summary>5. Open Source & Self-Hostable</summary>
             <p>
-                Set an expiration date for your note to automatically delete it after a specific day and time.
-                This ensures sensitive information doesn’t stay online longer than intended — perfect for temporary
-                access or time-limited sharing.
-            </p>
-        </details>
-
-        <details>
-            <summary>7. Self-Host or Deploy</summary>
-            <p>
-                Clipy is fully open-source — you can host it yourself or deploy it to your favorite platform like
-                Vercel,
-                Azure, or your own VPS. This gives you complete control over your data and privacy.
+                Clipy is fully open-source.
+                You can host it yourself or deploy it anywhere you like.
                 <br><br>
-                Get the source code and deployment instructions here:
                 <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener">
                     View on GitHub
-                </a>.
+                </a>
             </p>
         </details>
     </section>
 
     <!-- Footer -->
-    <footer role="contentinfo" style="text-align:center; font-size:0.95rem; opacity:0.85; margin-top:4rem">
+    <footer role="contentinfo"
+            style="text-align:center; font-size:0.95rem; opacity:0.85; margin-top:4rem">
         <p>
-            &copy; @Model.CurrentYear — <strong>Clipy</strong> —
-            Notes made fun, not creepy.<br>
-            <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener"
-                style="display:inline-flex; align-items:end; gap:4px;">
+            &copy; @Model.CurrentYear — <strong>Clipy</strong><br>
+            Secure notes & temporary live rooms — nothing creepy.<br><br>
+
+            <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener">
                 GitHub
             </a> ·
             <a asp-page="/Privacy">Privacy</a> ·

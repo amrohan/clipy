@@ -1,13 +1,19 @@
+using clipy.Hubs;
+using clipy.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=clipy.db"));
 
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+builder.Services.AddSingleton<IRoomManager, RoomManager>();
+builder.Services.AddHostedService<RoomCleanupService>();
+
 
 var app = builder.Build();
 
@@ -27,6 +33,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
-app.MapRazorPages();
+app.MapRazorPages().WithStaticAssets();
+app.MapHub<RoomHub>("/roomHub");
 
 app.Run();

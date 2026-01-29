@@ -1,0 +1,63 @@
+@page
+
+@model Room
+@{
+    ViewData["Title"] = "Clipy - Secure Notes & Live Rooms";
+}
+
+<main>
+
+    <hgroup>
+        <h1>Room</h1>
+        <p>
+            Live, temporary text sharing · No login · Auto expires in 5 minutes
+        </p>
+    </hgroup>
+
+    <!-- JOIN  -->
+    <section id="joinView">
+        <label>
+            Room Code
+            <input id="roomCode"
+                   placeholder="Enter room code"
+                   aria-describedby="valid-helper"
+            />
+            <small id="valid-helper"></small>
+        </label>
+
+        <div class="grid">
+            <button id="joinBtn">Join</button>
+            <button id="createBtn" class="secondary">Create</button>
+        </div>
+    </section>
+
+    <!-- ROOM -->
+    <section id="roomView" hidden>
+
+        <article>
+            <header>
+                Room:
+                <strong id="activeRoom"></strong>
+
+            </header>
+
+            <label>
+                Shared Text
+                <textarea id="input"
+                          rows="8"
+                          placeholder="Start typing…"></textarea>
+            </label>
+            <footer style="text-align: end">
+                <button style="width: 10rem"  id="exitBtn">
+                    Exit
+                </button>
+            </footer>
+        </article>
+
+    </section>
+
+</main>
+
+@section Scripts {
+    <script src="~/js/room.js"></script>
+}
