@@ -21,6 +21,23 @@ public class RoomManager : IRoomManager
             });
     }
 
+    public bool CanSendMessage(string roomCode, TimeSpan throttle)
+    {
+        var now = DateTime.UtcNow;
+
+        var room = _rooms.GetOrAdd(roomCode, _ => new RoomState());
+
+        lock (room) // per-room lock (cheap & safe)
+        {
+            if (now - room.LastMessageUtc < throttle)
+                return false;
+
+            room.LastMessageUtc = now;
+            room.LastActivityUtc = now;
+            return true;
+        }
+    }
+
     public IEnumerable<string> GetExpiredRooms(TimeSpan expiry)
     {
         return _rooms
