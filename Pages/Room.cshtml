@@ -38,11 +38,16 @@
             </header>
 
 
-            <label>
+            <label style="position:relative;">
                 Shared Text
                 <textarea id="input"
                           rows="8"
                           placeholder="Start typing…"></textarea>
+
+                <button style="position: absolute; top: 2rem;right: 1rem;height: 1.5rem; width: 3rem;font-size:x-small;display: grid;place-content: center "
+                        class="contrast" id="copyBtn">
+                    Copy
+                </button>
             </label>
 
             <footer style="display: flex; justify-content: space-between;align-items: center;gap: 1rem">
@@ -52,9 +57,11 @@
                         Other user is typing…
                     </small>
                 </p>
-                <button style="width: 10rem" id="exitBtn">
-                    Exit
-                </button>
+                <div>
+                    <button style="" id="exitBtn">
+                        Exit
+                    </button>
+                </div>
             </footer>
         </article>
     </section>

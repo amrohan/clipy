@@ -26,6 +26,10 @@
     <_ContentIncludedByDefault Remove="output\output\appsettings.Development.json" />
     <_ContentIncludedByDefault Remove="output\output\appsettings.json" />
     <_ContentIncludedByDefault Remove="output\output\clipy.staticwebassets.endpoints.json" />
+    <_ContentIncludedByDefault Remove="output\libman.json" />
+    <_ContentIncludedByDefault Remove="output\output\libman.json" />
+    <_ContentIncludedByDefault Remove="output\output\output\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="output\output\output\appsettings.json" />
   </ItemGroup>
 
 </Project>
