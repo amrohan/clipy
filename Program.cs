@@ -12,7 +12,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddSingleton<IRoomManager, RoomManager>();
-builder.Services.AddHostedService<RoomCleanupService>();
+builder.Services.AddSingleton<IRoomCleanupService, RoomCleanupService>();
+builder.Services.AddHostedService(p =>
+    (RoomCleanupService)p.GetRequiredService<IRoomCleanupService>());
 
 
 var app = builder.Build();

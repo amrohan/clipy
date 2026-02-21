@@ -22,9 +22,7 @@ public class RoomCleanupService(
     {
         foreach (var room in rooms.GetExpiredRooms(Expiry))
         {
-            await hub.Clients.Group(room)
-                .SendAsync("RoomExpired", cancellationToken);
-
+            await hub.Clients.Group(room).SendAsync("RoomExpired", cancellationToken: cancellationToken);
             rooms.Remove(room);
         }
     }

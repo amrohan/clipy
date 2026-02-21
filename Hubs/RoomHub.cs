@@ -10,7 +10,7 @@ public class RoomHub(IRoomManager rooms) : Hub
 
     public async Task JoinRoom(string roomCode)
     {
-        rooms.Touch(roomCode);
+        rooms.Join(Context.ConnectionId, roomCode);
         await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
     }
 
@@ -55,8 +55,10 @@ public class RoomHub(IRoomManager rooms) : Hub
             .SendAsync("ReceiveCursor", position);
     }
 
+
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        rooms.Leave(Context.ConnectionId);
         await base.OnDisconnectedAsync(exception);
     }
 }
