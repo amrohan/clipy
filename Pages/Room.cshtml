@@ -1,0 +1,74 @@
+@page
+@model Room
+@{
+    ViewData["Title"] = "Clipy - Secure Notes & Live Rooms";
+}
+
+<main>
+
+    <hgroup>
+        <h1>Room</h1>
+        <p>
+            Live, temporary text sharing · No login · Auto expires in 5 minutes
+        </p>
+    </hgroup>
+
+    <!-- JOIN -->
+    <section id="joinView">
+        <label>
+            Room Code
+            <input id="roomCode"
+                   placeholder="Enter room code"
+                   aria-describedby="valid-helper"/>
+            <small id="valid-helper"></small>
+        </label>
+
+        <div class="grid">
+            <button id="joinBtn">Join</button>
+            <button id="createBtn" class="secondary">Create</button>
+        </div>
+    </section>
+
+    <!-- ROOM -->
+    <section id="roomView" hidden>
+        <article>
+            <header>
+                Room:
+                <strong id="activeRoom"></strong>
+            </header>
+
+
+            <label style="position:relative;">
+                Shared Text
+                <textarea id="input"
+                          rows="8"
+                          placeholder="Start typing…"></textarea>
+
+                <button
+                    style="position: absolute; top: 2rem;right: 0.4rem;height: 1.5rem; width: 3rem;font-size:x-small;display: grid;place-content: center "
+                    class="contrast" id="copyBtn">
+                    Copy
+                </button>
+            </label>
+
+            <footer style="display: flex; justify-content: space-between;align-items: center;gap: 1rem">
+
+                <p>
+                    <small id="typing-indicator" hidden>
+                        Other user is typing…
+                    </small>
+                </p>
+                <div>
+                    <button style="" id="exitBtn">
+                        Exit
+                    </button>
+                </div>
+            </footer>
+        </article>
+    </section>
+
+</main>
+
+@section Scripts {
+    <script src="~/js/room.js"></script>
+}

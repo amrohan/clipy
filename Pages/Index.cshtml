@@ -1,0 +1,167 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Clipy - Secure Notes & Live Rooms";
+}
+
+<main>
+    <!-- Hero Section -->
+    <section style="margin-top: 1rem">
+        <header>
+            <h1>
+                Welcome to <mark>Clipy</mark>
+            </h1>
+
+            <h4>Secure notes · Live rooms · No accounts</h4>
+
+            <p class="lead">
+                Clipy helps you share information quickly and safely — whether it’s a secure note
+                or a live, temporary room for real-time collaboration.
+                <br><br>
+                Choose what fits your need: share a private note with a link,
+                or spin up a live room and type together instantly.
+            </p>
+        </header>
+
+        <!-- CTA Buttons -->
+        <div class="button-group">
+            <a href="/AddNote" role="button" style="width:100%">
+                Create Secure Note
+            </a>
+
+            <a href="/Room" role="button" class="contrast" style="width:100%">
+                Start Live Room
+            </a>
+
+            <a href="/ViewNote" role="button" class="secondary" style="width:100%">
+                View Note
+            </a>
+        </div>
+    </section>
+
+    <!-- What Can You Do -->
+    <section style="margin-top:4rem;">
+        <h4>What You Can Do with Clipy</h4>
+
+        <details open>
+            <summary> Secure Notes (Link-based)</summary>
+            <p>
+                Create encrypted notes and share them using a unique URL.
+                Perfect for passwords, one-time messages, or sensitive text.
+                Notes can auto-delete after being viewed or after a set expiry time.
+            </p>
+        </details>
+
+        <details>
+            <summary> Live Rooms (Real-time)</summary>
+            <p>
+                Start a live room and share the room code with others.
+                Everyone in the room sees updates instantly as you type.
+                No login, no storage — rooms automatically expire after inactivity.
+            </p>
+        </details>
+    </section>
+
+    <!-- How It Works -->
+    <section style="margin-top:4rem;">
+        <h4>How It Works</h4>
+
+        <details>
+            <summary>1. Choose Notes or Rooms</summary>
+            <p>
+                Use <strong>Notes</strong> for secure, encrypted sharing via a link.
+                Use <strong>Rooms</strong> when you need live, temporary collaboration.
+            </p>
+        </details>
+
+        <details>
+            <summary>2. Share Instantly</summary>
+            <p>
+                Notes give you a private URL.
+                Rooms give you a short room code.
+                Share either one — no signup required.
+            </p>
+        </details>
+
+        <details>
+            <summary>3. Built-in Privacy</summary>
+            <p>
+                Notes are encrypted at rest and can self-destruct.
+                Rooms live only in memory and automatically expire after inactivity.
+            </p>
+        </details>
+
+        <details>
+            <summary>4. Nothing Lingers</summary>
+            <p>
+                Notes expire based on your settings.
+                Rooms disappear automatically when no one is active.
+                No clutter. No history. No tracking.
+            </p>
+        </details>
+
+        <details>
+            <summary>5. Open Source & Self-Hostable</summary>
+            <p>
+                Clipy is fully open-source.
+                You can host it yourself or deploy it anywhere you like.
+                <br><br>
+                <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener">
+                    View on GitHub
+                </a>
+            </p>
+        </details>
+    </section>
+
+    <!-- Footer -->
+    <footer role="contentinfo"
+            style="text-align:center; font-size:0.95rem; opacity:0.85; margin-top:4rem">
+        <p>
+            &copy; @Model.CurrentYear — <strong>Clipy</strong><br>
+            Secure notes & temporary live rooms — nothing creepy.<br><br>
+
+            <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener">
+                GitHub
+            </a> ·
+            <a asp-page="/Privacy">Privacy</a> ·
+            Built by <a href="https://amrohan.in" target="_blank" rel="noopener">@@amrohan</a>
+        </p>
+    </footer>
+</main>
+
+<style>
+    footer {
+        position: sticky;
+        top: calc(100vh - 1vh);
+        margin-top: auto;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    @@media (min-width: 640px) {
+        .button-group {
+            width: 60%;
+            flex-direction: row;
+        }
+    }
+
+    details {
+        margin: 1rem 0;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+    }
+
+    details summary {
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
