@@ -59,7 +59,7 @@ else
                   rows="7">@Model.NoteContent</textarea>
         <span asp-validation-for="NoteContent" class="error-message"></span>
         <label for="UploadFile">
-            Attach File (optional)
+            Attach File (optional - File auto expires after 7 days)
             <input type="file" asp-for="UploadFile" />
         </label>
 
@@ -95,7 +95,7 @@ else
 
             <label for="DeleteAfterView">
                 <input type="checkbox" id="DeleteAfterView" name="DeleteAfterView" value="true" @(Model.DeleteAfterView ?
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "checked" : "")>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "checked" : "")>
                 Delete after first view
             </label>
         </details>
@@ -136,94 +136,94 @@ else
 
 @section Scripts {
     <script>
-                            document.addEventListener('DOMContentLoaded', () => {
-                                const form = document.getElementById('noteForm');
-                                const submitBtn = document.getElementById('submitBtn');
-                                const expirySelect = document.getElementById('ExpiryOption');
-                                const customDateInput = document.getElementById('CustomExpiryDate');
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const form = document.getElementById('noteForm');
+                                    const submitBtn = document.getElementById('submitBtn');
+                                    const expirySelect = document.getElementById('ExpiryOption');
+                                    const customDateInput = document.getElementById('CustomExpiryDate');
 
-                                // Show custom date input if selected
-                                if (expirySelect && customDateInput) {
-                                    expirySelect.addEventListener('change', () => {
-                                        const isCustom = expirySelect.value === 'custom';
-                                        customDateInput.style.display = isCustom ? 'block' : 'none';
-                                        customDateInput.required = isCustom;
-                                    });
-                                }
-
-                                // Show loading state on submit
-                                if (form && submitBtn) {
-                                    form.addEventListener('submit', () => {
-                                        if (form.checkValidity()) {
-                                            submitBtn.disabled = true;
-                                            submitBtn.setAttribute('aria-busy', 'true');
-                                            submitBtn.textContent = 'Saving...';
-                                        }
-                                    });
-                                }
-
-                                // Copy URL button
-                                const copyBtn = document.getElementById('copyBtn');
-                                const noteContent = document.getElementById('noteContent');
-                                const copyIcon = document.getElementById('copyIcon');
-                                const originalIconHTML = copyIcon?.innerHTML;
-
-                                if (copyBtn && noteContent) {
-                                    copyBtn.addEventListener('click', () => {
-                                        const text = noteContent.innerText || noteContent.textContent || '';
-                                        if (!text) return;
-
-                                        if (navigator.clipboard && window.isSecureContext) {
-                                            navigator.clipboard.writeText(text).then(() => showSuccess()).catch(() => fallbackCopy(text));
-                                        } else fallbackCopy(text);
-                                    });
-                                }
-
-                                function fallbackCopy(text) {
-                                    const textArea = document.createElement('textarea');
-                                    textArea.value = text;
-                                    textArea.style.position = 'absolute';
-                                    textArea.style.left = '-9999px';
-                                    document.body.appendChild(textArea);
-                                    textArea.select();
-                                    try {
-                                        document.execCommand('copy');
-                                        showSuccess();
-                                    } catch {
+                                    // Show custom date input if selected
+                                    if (expirySelect && customDateInput) {
+                                        expirySelect.addEventListener('change', () => {
+                                            const isCustom = expirySelect.value === 'custom';
+                                            customDateInput.style.display = isCustom ? 'block' : 'none';
+                                            customDateInput.required = isCustom;
+                                        });
                                     }
-                                    document.body.removeChild(textArea);
-                                }
 
-                                function showSuccess() {
-                                    if (!copyIcon) return;
-                                    copyIcon.setAttribute('stroke', 'green');
-                                    copyIcon.innerHTML = `<path d="M20 6L9 17l-5-5" />`;
-                                    setTimeout(() => {
-                                        if (copyIcon) {
-                                            copyIcon.setAttribute('stroke', 'currentColor');
-                                            if (originalIconHTML !== null) copyIcon.innerHTML = originalIconHTML;
-                                        }
-                                    }, 1500);
-                                }
+                                    // Show loading state on submit
+                                    if (form && submitBtn) {
+                                        form.addEventListener('submit', () => {
+                                            if (form.checkValidity()) {
+                                                submitBtn.disabled = true;
+                                                submitBtn.setAttribute('aria-busy', 'true');
+                                                submitBtn.textContent = 'Saving...';
+                                            }
+                                        });
+                                    }
 
-                                // Show share button if Web Share API is available
-                                const shareMenu = document.getElementById('shareMenu');
-                                const shareBtn = document.getElementById('shareBtn');
-                                if (shareMenu && shareBtn && navigator.share && noteContent) {
-                                    shareMenu.style.display = 'block';
-                                    shareBtn.addEventListener('click', async () => {
+                                    // Copy URL button
+                                    const copyBtn = document.getElementById('copyBtn');
+                                    const noteContent = document.getElementById('noteContent');
+                                    const copyIcon = document.getElementById('copyIcon');
+                                    const originalIconHTML = copyIcon?.innerHTML;
+
+                                    if (copyBtn && noteContent) {
+                                        copyBtn.addEventListener('click', () => {
+                                            const text = noteContent.innerText || noteContent.textContent || '';
+                                            if (!text) return;
+
+                                            if (navigator.clipboard && window.isSecureContext) {
+                                                navigator.clipboard.writeText(text).then(() => showSuccess()).catch(() => fallbackCopy(text));
+                                            } else fallbackCopy(text);
+                                        });
+                                    }
+
+                                    function fallbackCopy(text) {
+                                        const textArea = document.createElement('textarea');
+                                        textArea.value = text;
+                                        textArea.style.position = 'absolute';
+                                        textArea.style.left = '-9999px';
+                                        document.body.appendChild(textArea);
+                                        textArea.select();
                                         try {
-                                            await navigator.share({
-                                                title: 'A Secure Note',
-                                                text: 'Here is a secure note I created for you:',
-                                                url: noteContent.innerText || window.location.href
-                                            });
+                                            document.execCommand('copy');
+                                            showSuccess();
                                         } catch {
                                         }
-                                    });
-                                }
+                                        document.body.removeChild(textArea);
+                                    }
+
+                                    function showSuccess() {
+                                        if (!copyIcon) return;
+                                        copyIcon.setAttribute('stroke', 'green');
+                                        copyIcon.innerHTML = `<path d="M20 6L9 17l-5-5" />`;
+                                        setTimeout(() => {
+                                            if (copyIcon) {
+                                                copyIcon.setAttribute('stroke', 'currentColor');
+                                                if (originalIconHTML !== null) copyIcon.innerHTML = originalIconHTML;
+                                            }
+                                        }, 1500);
+                                    }
+
+                                    // Show share button if Web Share API is available
+                                    const shareMenu = document.getElementById('shareMenu');
+                                    const shareBtn = document.getElementById('shareBtn');
+                                    if (shareMenu && shareBtn && navigator.share && noteContent) {
+                                        shareMenu.style.display = 'block';
+                                        shareBtn.addEventListener('click', async () => {
+                                            try {
+                                                await navigator.share({
+                                                    title: 'A Secure Note',
+                                                    text: 'Here is a secure note I created for you:',
+                                                    url: noteContent.innerText || window.location.href
+                                                });
+                                            } catch {
+                                            }
+                                        });
+                                    }
 
 
-                            });
+                                });
     </script>
 }
