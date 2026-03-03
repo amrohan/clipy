@@ -12,8 +12,6 @@ public class DownloadModel(
 {
     public async Task<IActionResult> OnGetAsync(string code)
     {
-        Console.WriteLine("Download hit: " + code);
-
         var note = await db.Notes
             .AsNoTracking()
             .FirstOrDefaultAsync(n => n.Code == code);

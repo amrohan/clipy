@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace clipy.Pages;
 
-public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService, IFileStorageService storage) : PageModel
+public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService, IFileStorageService storage)
+    : PageModel
 {
     [BindProperty, Required(ErrorMessage = "Note content is required.")]
     public required string NoteContent { get; set; }
@@ -23,8 +24,7 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
 
     [BindProperty] public bool IsLoading { get; set; } = false;
 
-    [BindProperty]
-    public IFormFile? UploadFile { get; set; }
+    [BindProperty] public IFormFile? UploadFile { get; set; }
 
     public string? NoteUrl { get; set; }
     public string? ErrorMessage { get; set; }
@@ -39,9 +39,7 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
         if (UploadFile != null && UploadFile.Length > 0)
         {
             originalFileName = UploadFile.FileName;
-            storedFileName = $"{Guid.NewGuid()}_{UploadFile.FileName}";
-
-            using var stream = UploadFile.OpenReadStream();
+            await using var stream = UploadFile.OpenReadStream();
 
             storedFileName = $"{Guid.NewGuid()}_{UploadFile.FileName}";
             await storage.UploadAsync(UploadFile, storedFileName);
