@@ -4,228 +4,251 @@
     ViewData["Title"] = "View Note";
 }
 
-<section style="min-height:70dvh">
+<div class="max-w-5xl mx-auto p-4 min-h-[70dvh]">
+
     @if (Model.RequiresPassword)
     {
-        <hgroup>
-            <h2>Password Required</h2>
-            <p>This note is protected. Please enter the password to view it.</p>
-        </hgroup>
+        <div class="card bg-base-100  border border-base-300">
+            <div class="card-body">
 
-        <form method="post" asp-page-handler="Password" id="passwordForm">
-            <input type="hidden" name="Code" value="@Model.Code" />
+                <h2 class="card-title">Password Required</h2>
+                <p class="text-base-content/70">
+                    This note is protected. Enter the password to continue.
+                </p>
 
-            <label for="SubmittedPassword">Password</label>
-            @if (Model.PasswordAttempted)
-            {
-                <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password" required
-                       autofocus aria-invalid="@(Model.PasswordAttempted.ToString().ToLower())"
-                       aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
-            }
-            else
-            {
-                <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password" required
-                       aria-describedby="@(Model.PasswordAttempted ? "invalid-helper" : null)">
-            }
+                <form method="post" asp-page-handler="Password" id="passwordForm" class="space-y-4">
 
-            @if (Model.PasswordAttempted)
-            {
-                <small id="invalid-helper"> Incorrect password. Please try again.</small>
-            }
+                    <input type="hidden" name="Code" value="@Model.Code"/>
 
-            <button type="submit" id="unlockBtn">Unlock Note</button>
-        </form>
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend">Password</legend>
+
+                        <input
+                            type="password"
+                            name="SubmittedPassword"
+                            id="SubmittedPassword"
+                            placeholder="Enter password"
+                            class="input input-bordered w-full"
+                            required
+                            @(Model.PasswordAttempted ? "autofocus aria-invalid=true" : "")>
+
+                        @if (Model.PasswordAttempted)
+                        {
+                            <p class="text-error text-sm mt-1">
+                                Incorrect password. Please try again.
+                            </p>
+                        }
+
+                    </fieldset>
+
+                    <button type="submit" id="unlockBtn" class="btn btn-primary w-full">
+                        Unlock Note
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
     }
     else if (Model.ShowConfirmation)
     {
-        <hgroup>
-            <h2>Confirm View</h2>
-            <p style="color:rgb(213, 51, 51)"><strong>⚠ This note will be permanently deleted immediately after you view
-                it.</strong></p>
-            </hgroup>
-            <p>
-                To make sure you don’t open it by mistake, please confirm that you really want to view the note.
-                Once you open it, the note cannot be recovered or viewed again.
-            </p>
-            <form method="post" asp-page-handler="Confirm" id="confirmForm">
-                <input type="hidden" name="Code" value="@Model.Code" />
-                <button type="submit" id="confirmBtn">Show Me the Note</button>
-            </form>
-        }
+        <div class="card bg-base-100  border border-base-300">
+            <div class="card-body">
+
+                <h2 class="card-title">Confirm View</h2>
+
+                <div class="alert alert-warning">
+                    <span>
+                        ⚠ This note will be permanently deleted after you view it.
+                    </span>
+                </div>
+
+                <p class="text-base-content/70">
+                    To avoid accidental opening, please confirm you really want to view this note.
+                    Once opened, the note cannot be recovered.
+                </p>
+
+                <form method="post" asp-page-handler="Confirm" id="confirmForm">
+
+                    <input type="hidden" name="Code" value="@Model.Code"/>
+
+                    <button type="submit" id="confirmBtn" class="btn btn-error w-full">
+                        Show Me the Note
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    }
     else if (Model.Note != null)
-        {
-            <hgroup>
-                <h2>Share Note</h2>
-                @if (Model.JustViewedDeletableNote)
-                {
-                    <p style="color:rgb(213, 51, 51)" role="alert">⚠ This note will be permanently deleted if you refresh or
-                        leave this page.</p>
-                    }
-                </hgroup>
+    {
+        <div class="card bg-base-100 border border-base-300">
 
-                <div
-                    style="position: sticky; top: 4rem; display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;margin-bottom:1rem">
+            <div class="card-body">
 
-                    @if (Model.Note.FileName != null)
-                    {
-                        <a data-tooltip="Click to download the uploaded file" style="width:15rem" asp-page="/Download" asp-route-code="@Model.Note.Code" role="button">
-                            Download File
-                        </a>
-                    }
-                    <div style="display: flex; justify-content: flex-end; align-items: center; width: 100%; gap: 10px;">
-                        <button data-tooltip="Download note" id="downloadBtn" title="Download Note" class="primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" y1="15" x2="12" y2="3" />
-                            </svg>
+                <div class="flex justify-between items-center flex-wrap gap-2">
+
+                    <h2 class="card-title">Shared Note</h2>
+
+                    <div class="flex gap-2">
+
+                        @if (Model.Note.FileName != null)
+                        {
+                            <a
+                                asp-page="/Download"
+                                asp-route-code="@Model.Note.Code"
+                                class="btn btn-outline btn-sm">
+                                Download File
+                            </a>
+                        }
+
+                        <button id="downloadBtn" class="btn btn-outline btn-sm">
+                            Download
                         </button>
-                        <button data-tooltip="Copy the content" id="copyBtn" class="contrast">
-                            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                 viewBox="0 0 24 24">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
+
+                        <button id="copyBtn" class="btn btn-outline btn-sm">
+                            Copy
                         </button>
+
                     </div>
 
                 </div>
-                <pre><code id="noteContent">@Model.Note.Content</code></pre>
 
-            }
+                @if (Model.JustViewedDeletableNote)
+                {
+                    <div class="alert alert-warning mt-3">
+                        <span>
+                            ⚠ This note will be deleted if you refresh or leave this page.
+                        </span>
+                    </div>
+                }
+
+                <div class="mockup-code mt-4">
+                    <pre class="px-6 md:px-10"><code id="noteContent">@Model.Note.Content</code></pre>
+                </div>
+
+            </div>
+        </div>
+    }
     else
-            {
-                <hgroup>
-                    <h2>Find Your Note</h2>
-                    <p>Enter your note code to view it:</p>
-                </hgroup>
+    {
+        <div class="card bg-base-100  border border-base-300">
 
-                <form method="get" id="codeForm">
-                    <label for="Code">Note Code</label>
-                    @if (Model.AttemptedAndNotFound)
-                    {
-                        <input type="text" id="Code" name="code" placeholder="Enter your code" required
-                               aria-invalid="@(Model.AttemptedAndNotFound.ToString().ToLower())"
-                               aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
-                    }
-                    else
-                    {
-                        <input type="text" id="Code" name="code" placeholder="Enter your code" required
-                               aria-describedby="@(Model.AttemptedAndNotFound ? "invalid-helper" : null)">
-                    }
+            <div class="card-body">
 
-                    @if (Model.AttemptedAndNotFound)
-                    {
-                        <small id="invalid-helper"> Note not found. Please check your code.</small>
-                    }
-
-                    <button type="submit" id="viewCodeBtn">View Note</button>
-                </form>
-            }
-        </section>
-
-        <section>
-            <footer role="contentinfo" style="text-align:center; font-size:0.95rem; opacity:0.85; margin-top:4rem">
-                <p>
-                    &copy; @Model.CurrentYear — <strong>Clipy</strong> —
-                    Notes made fun, not creepy.<br>
-                    <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener"
-                           style="display:inline-flex; align-items:end; gap:4px;">
-                        GitHub
-                    </a> ·
-                    <a asp-page="/Privacy">Privacy</a> ·
-                    Built by <a href="https://amrohan.in" target="_blank" rel="noopener">@@amrohan</a>
+                <h2 class="card-title">Find Your Note</h2>
+                <p class="text-base-content/70">
+                    Enter your note code to view it.
                 </p>
-            </footer>
-        </section>
 
-        @section Scripts {
-            <script>
-                                                                                                                                                                                                                                                        document.addEventListener("DOMContentLoaded", () => {
-                                                                                                                                                                                                                                                            const copyBtn = document.getElementById("copyBtn");
-                                                                                                                                                                                                                                                            const noteContent = document.getElementById("noteContent");
-                                                                                                                                                                                                                                                            const copyIcon = document.getElementById("copyIcon");
-                                                                                                                                                                                                                                                            const originalIconHTML = copyIcon?.innerHTML || '';
+                <form method="get" id="codeForm" class="space-y-4">
 
-                                                                                                                                                                                                                                                            if (copyBtn && noteContent) {
-                                                                                                                                                                                                                                                                copyBtn.addEventListener("click", () => {
-                                                                                                                                                                                                                                                                    const text = noteContent.innerText;
+                    <fieldset class="fieldset">
 
-                                                                                                                                                                                                                                                                    if (navigator.clipboard && window.isSecureContext) {
-                                                                                                                                                                                                                                                                        navigator.clipboard.writeText(text).then(() => showSuccess());
-                                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                                        const textArea = document.createElement("textarea");
-                                                                                                                                                                                                                                                                        textArea.value = text;
-                                                                                                                                                                                                                                                                        textArea.style.position = "absolute";
-                                                                                                                                                                                                                                                                        textArea.style.left = "-9999px";
-                                                                                                                                                                                                                                                                        document.body.appendChild(textArea);
-                                                                                                                                                                                                                                                                        textArea.select();
-                                                                                                                                                                                                                                                                        try {
-                                                                                                                                                                                                                                                                            document.execCommand('copy');
-                                                                                                                                                                                                                                                                            showSuccess();
-                                                                                                                                                                                                                                                                        } catch {
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        document.body.removeChild(textArea);
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                            }
+                        <legend class="fieldset-legend">Note Code</legend>
 
-                                                                                                                                                                                                                                                            function showSuccess() {
-                                                                                                                                                                                                                                                                if (!copyIcon) return;
-                                                                                                                                                                                                                                                                copyIcon.setAttribute("stroke", "green");
-                                                                                                                                                                                                                                                                copyIcon.innerHTML = `<path d="M20 6L9 17l-5-5" />`;
-                                                                                                                                                                                                                                                                setTimeout(() => {
-                                                                                                                                                                                                                                                                    copyIcon.setAttribute("stroke", "currentColor");
-                                                                                                                                                                                                                                                                    copyIcon.innerHTML = originalIconHTML;
-                                                                                                                                                                                                                                                                }, 1500);
-                                                                                                                                                                                                                                                            }
+                        <input
+                            type="text"
+                            id="Code"
+                            name="code"
+                            placeholder="Enter your code"
+                            class="input input-bordered w-full"
+                            required
+                            @(Model.AttemptedAndNotFound ? "aria-invalid=true" : "")>
 
-                                                                                                                                                                                                                                                            const downloadBtn = document.getElementById("downloadBtn");
-                                                                                                                                                                                                                                                            if (downloadBtn && noteContent) {
-                                                                                                                                                                                                                                                                downloadBtn.addEventListener("click", () => {
-                                                                                                                                                                                                                                                                    const blob = new Blob([noteContent.innerText], { type: "text/plain;charset=utf-8" });
-                                                                                                                                                                                                                                                                    const url = URL.createObjectURL(blob);
-                                                                                                                                                                                                                                                                    const a = document.createElement("a");
-                                                                                                                                                                                                                                                                    a.href = url;
-                                                                                                                                                                                                                                                                    a.download = `note-${new Date().getTime()}.txt`;
-                                                                                                                                                                                                                                                                    document.body.appendChild(a);
-                                                                                                                                                                                                                                                                    a.click();
-                                                                                                                                                                                                                                                                    document.body.removeChild(a);
-                                                                                                                                                                                                                                                                    URL.revokeObjectURL(url);
-                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                            }
+                        @if (Model.AttemptedAndNotFound)
+                        {
+                            <p class="text-error text-sm mt-1">
+                                Note not found. Please check the code.
+                            </p>
+                        }
 
-                                                                                                                                                                                                                                                            // Loading states for forms
-                                                                                                                                                                                                                                                            const passwordForm = document.getElementById('passwordForm');
-                                                                                                                                                                                                                                                            const unlockBtn = document.getElementById('unlockBtn');
-                                                                                                                                                                                                                                                            if (passwordForm && unlockBtn) {
-                                                                                                                                                                                                                                                                passwordForm.addEventListener('submit', () => {
-                                                                                                                                                                                                                                                                    unlockBtn.disabled = true;
-                                                                                                                                                                                                                                                                    unlockBtn.textContent = 'Checking...';
-                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                            }
+                    </fieldset>
 
-                                                                                                                                                                                                                                                            const confirmForm = document.getElementById('confirmForm');
-                                                                                                                                                                                                                                                            const confirmBtn = document.getElementById('confirmBtn');
-                                                                                                                                                                                                                                                            if (confirmForm && confirmBtn) {
-                                                                                                                                                                                                                                                                confirmForm.addEventListener('submit', () => {
-                                                                                                                                                                                                                                                                    confirmBtn.disabled = true;
-                                                                                                                                                                                                                                                                    confirmBtn.textContent = 'Loading Note...';
-                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                            }
+                    <button type="submit" id="viewCodeBtn" class="btn btn-primary w-full">
+                        View Note
+                    </button>
 
-                                                                                                                                                                                                                                                            const codeForm = document.getElementById('codeForm');
-                                                                                                                                                                                                                                                            const viewCodeBtn = document.getElementById('viewCodeBtn');
-                                                                                                                                                                                                                                                            if (codeForm && viewCodeBtn) {
-                                                                                                                                                                                                                                                                codeForm.addEventListener('submit', () => {
-                                                                                                                                                                                                                                                                    viewCodeBtn.disabled = true;
-                                                                                                                                                                                                                                                                    viewCodeBtn.textContent = 'Finding...';
-                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                            }
+                </form>
+
+            </div>
+        </div>
+    }
+
+</div>
 
 
-                                                                                                                                                                                                                                                        });
-            </script>
-        }
+<footer class="text-center opacity-70 text-sm py-10">
+
+    <p>
+        © @Model.CurrentYear — <strong>Clipy</strong> —
+        Notes made fun, not creepy.
+    </p>
+
+    <div class="flex justify-center gap-4 mt-2">
+
+        <a href="https://github.com/amrohan/clipy" target="_blank" class="link">
+            GitHub
+        </a>
+
+        <a asp-page="/Privacy" class="link">
+            Privacy
+        </a>
+
+        <a href="https://amrohan.in" target="_blank" class="link">
+            @@amrohan
+        </a>
+
+    </div>
+
+</footer>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const copyBtn = document.getElementById("copyBtn");
+            const noteContent = document.getElementById("noteContent");
+
+            if (!copyBtn || !noteContent) return;
+
+            copyBtn.addEventListener("click", async () => {
+
+                const text = noteContent.innerText;
+
+                try {
+
+                    if (navigator.clipboard && window.isSecureContext) {
+
+                        await navigator.clipboard.writeText(text);
+
+                    } else {
+
+                        const temp = document.createElement("textarea");
+                        temp.value = text;
+                        document.body.appendChild(temp);
+                        temp.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(temp);
+
+                    }
+
+                    const original = copyBtn.innerText;
+                    copyBtn.innerText = "Copied";
+
+                    setTimeout(() => {
+                        copyBtn.innerText = original;
+                    }, 1500);
+
+                } catch (err) {
+                    console.error(err);
+                    alert("Unable to copy text");
+                }
+
+            });
+
+        });
+
+    </script>
+}

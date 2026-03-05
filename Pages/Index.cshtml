@@ -4,164 +4,223 @@
     ViewData["Title"] = "Clipy - Secure Notes & Live Rooms";
 }
 
-<main>
-    <!-- Hero Section -->
-    <section style="margin-top: 1rem">
-        <header>
-            <h1>
-                Welcome to <mark>Clipy</mark>
+<div class="relative overflow-hidden">
+
+    <!-- subtle background glow -->
+    <div
+        class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-primary/10 blur-[140px] rounded-full -z-10"></div>
+
+    <main class="max-w-6xl mx-auto px-6">
+
+        <!-- HERO -->
+        <section class="text-center pt-24 pb-28">
+
+            <h1 class="text-5xl md:text-6xl font-bold tracking-tight">
+                Share Text
+                <span class="text-primary">Securely</span>
             </h1>
 
-            <h4>Secure notes · Live rooms · No accounts</h4>
-
-            <p class="lead">
-                Clipy helps you share information quickly and safely — whether it’s a secure note
-                or a live, temporary room for real-time collaboration.
-                <br><br>
-                Choose what fits your need: share a private note with a link,
-                or spin up a live room and type together instantly.
+            <p class="mt-6 text-lg text-base-content/70 max-w-2xl mx-auto leading-relaxed">
+                Create secure notes or collaborate in live rooms instantly.
+                No login. No tracking. Just simple and private sharing.
             </p>
-        </header>
 
-        <!-- CTA Buttons -->
-        <div class="button-group">
-            <a href="/AddNote" role="button" style="width:100%">
-                Create Secure Note
-            </a>
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
 
-            <a href="/Room" role="button" class="contrast" style="width:100%">
-                Start Live Room
-            </a>
-
-            <a href="/ViewNote" role="button" class="secondary" style="width:100%">
-                View Note
-            </a>
-        </div>
-    </section>
-
-    <!-- What Can You Do -->
-    <section style="margin-top:4rem;">
-        <h4>What You Can Do with Clipy</h4>
-
-        <details open>
-            <summary> Secure Notes (Link-based)</summary>
-            <p>
-                Create encrypted notes and share them using a unique URL.
-                Perfect for passwords, one-time messages, or sensitive text.
-                Notes can auto-delete after being viewed or after a set expiry time.
-            </p>
-        </details>
-
-        <details>
-            <summary> Live Rooms (Real-time)</summary>
-            <p>
-                Start a live room and share the room code with others.
-                Everyone in the room sees updates instantly as you type.
-                No login, no storage — rooms automatically expire after inactivity.
-            </p>
-        </details>
-    </section>
-
-    <!-- How It Works -->
-    <section style="margin-top:4rem;">
-        <h4>How It Works</h4>
-
-        <details>
-            <summary>1. Choose Notes or Rooms</summary>
-            <p>
-                Use <strong>Notes</strong> for secure, encrypted sharing via a link.
-                Use <strong>Rooms</strong> when you need live, temporary collaboration.
-            </p>
-        </details>
-
-        <details>
-            <summary>2. Share Instantly</summary>
-            <p>
-                Notes give you a private URL.
-                Rooms give you a short room code.
-                Share either one — no signup required.
-            </p>
-        </details>
-
-        <details>
-            <summary>3. Built-in Privacy</summary>
-            <p>
-                Notes are encrypted at rest and can self-destruct.
-                Rooms live only in memory and automatically expire after inactivity.
-            </p>
-        </details>
-
-        <details>
-            <summary>4. Nothing Lingers</summary>
-            <p>
-                Notes expire based on your settings.
-                Rooms disappear automatically when no one is active.
-                No clutter. No history. No tracking.
-            </p>
-        </details>
-
-        <details>
-            <summary>5. Open Source & Self-Hostable</summary>
-            <p>
-                Clipy is fully open-source.
-                You can host it yourself or deploy it anywhere you like.
-                <br><br>
-                <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener">
-                    View on GitHub
+                <a href="/AddNote" class="btn btn-primary btn-base  px-8">
+                    Create Secure Note
                 </a>
+
+                <a href="/Room" class="btn btn-neutral btn-base  px-8">
+                    Start Live Room
+                </a>
+
+                <a href="/ViewNote" class="btn btn-ghost btn-base  px-8">
+                    View Note
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FEATURES -->
+        <section class="py-20 border-t border-base-content/10">
+
+            <div class="text-center mb-14">
+
+                <h2 class="text-3xl font-bold">
+                    What You Can Do
+                </h2>
+
+                <p class="text-base-content/60 mt-3">
+                    Simple tools for secure and temporary text sharing
+                </p>
+
+            </div>
+
+
+            <div class="grid md:grid-cols-2 gap-8">
+
+                <!-- Secure Notes -->
+                <div class="rounded-xl border border-base-content/10 p-8 bg-base-100">
+
+                    <h3 class="text-xl font-semibold mb-3">
+                        Secure Notes
+                    </h3>
+
+                    <p class="text-base-content/70 mb-4">
+                        Create private encrypted notes and share them with a unique link.
+                        Perfect for passwords, one-time messages, or sensitive data.
+                    </p>
+
+                    <ul class="text-sm text-base-content/60 space-y-1">
+                        <li>• Link-based sharing</li>
+                        <li>• Attach files</li>
+                        <li>• No account required</li>
+                    </ul>
+
+                </div>
+
+
+                <!-- Live Rooms -->
+                <div class="rounded-xl border border-base-content/10 p-8 bg-base-100">
+
+                    <h3 class="text-xl font-semibold mb-3">
+                        Live Rooms
+                    </h3>
+
+                    <p class="text-base-content/70 mb-4">
+                        Start a live room and collaborate instantly.
+                        Everyone sees updates as you type in real time.
+                    </p>
+
+                    <ul class="text-sm text-base-content/60 space-y-1">
+                        <li>• Real-time typing</li>
+                        <li>• Room codes for sharing</li>
+                        <li>• Auto-expire after inactivity</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+        <section class="py-20 border-t border-base-content/10">
+
+            <div class="text-center mb-14">
+
+                <h2 class="text-3xl font-bold">
+                    How Clipy Works
+                </h2>
+
+            </div>
+
+
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <div class="rounded-xl border border-base-content/10 p-8 text-center">
+
+                    <div class="badge badge-primary mb-4">1</div>
+
+                    <h3 class="font-semibold text-lg mb-2">
+                        Create
+                    </h3>
+
+                    <p class="text-base-content/70 text-sm">
+                        Choose between creating a secure note or starting a live room.
+                    </p>
+
+                </div>
+
+
+                <div class="rounded-xl border border-base-content/10 p-8 text-center">
+
+                    <div class="badge badge-primary mb-4">2</div>
+
+                    <h3 class="font-semibold text-lg mb-2">
+                        Share
+                    </h3>
+
+                    <p class="text-base-content/70 text-sm">
+                        Send the generated link or room code to anyone.
+                    </p>
+
+                </div>
+
+
+                <div class="rounded-xl border border-base-content/10 p-8 text-center">
+
+                    <div class="badge badge-primary mb-4">3</div>
+
+                    <h3 class="font-semibold text-lg mb-2">
+                        Done
+                    </h3>
+
+                    <p class="text-base-content/70 text-sm">
+                        Content disappears automatically after expiry or inactivity.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CALL TO ACTION -->
+        <section class="py-20">
+
+            <div class="rounded-2xl border border-primary/20 bg-primary/5 text-center p-12">
+
+                <h2 class="text-3xl font-bold mb-4">
+                    Start Sharing Instantly
+                </h2>
+
+                <p class="text-base-content/70 mb-6">
+                    No accounts. No setup. Just create and share.
+                </p>
+
+                <a href="/AddNote" class="btn btn-primary btn-lg px-8">
+                    Create Your First Note
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="py-12 border-t border-base-content/10 text-center">
+
+            <p class="text-sm text-base-content/60">
+                © @Model.CurrentYear — <strong>Clipy</strong>
             </p>
-        </details>
-    </section>
 
-    <!-- Footer -->
-    <footer role="contentinfo"
-            style="text-align:center; font-size:0.95rem; opacity:0.85; margin-top:4rem">
-        <p>
-            &copy; @Model.CurrentYear — <strong>Clipy</strong><br>
-            Secure notes & temporary live rooms — nothing creepy.<br><br>
+            <p class="text-sm text-base-content/50 mt-1">
+                Secure notes & temporary live rooms
+            </p>
 
-            <a href="https://github.com/amrohan/clipy" target="_blank" rel="noopener">
-                GitHub
-            </a> ·
-            <a asp-page="/Privacy">Privacy</a> ·
-            Built by <a href="https://amrohan.in" target="_blank" rel="noopener">@@amrohan</a>
-        </p>
-    </footer>
-</main>
+            <div class="flex justify-center gap-6 mt-4 text-sm">
 
-<style>
-    footer {
-        position: sticky;
-        top: calc(100vh - 1vh);
-        margin-top: auto;
-        text-align: center;
-        z-index: 1000;
-    }
+                <a class="link link-hover" href="https://github.com/amrohan/clipy">
+                    GitHub
+                </a>
 
-    .button-group {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2rem;
-    }
+                <a class="link link-hover" asp-page="/Privacy">
+                    Privacy
+                </a>
 
-    @@media (min-width: 640px) {
-        .button-group {
-            width: 60%;
-            flex-direction: row;
-        }
-    }
+                <a class="link link-hover" href="https://amrohan.in">
+                    @@amrohan
+                </a>
 
-    details {
-        margin: 1rem 0;
-        border-radius: 8px;
-        padding: 0.8rem 1rem;
-    }
+            </div>
 
-    details summary {
-        font-weight: bold;
-        cursor: pointer;
-    }
-</style>
+        </footer>
+
+    </main>
+</div>
