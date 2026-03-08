@@ -233,44 +233,50 @@
 @section Scripts {
 
     <script>
+
         document.addEventListener("DOMContentLoaded", () => {
 
-            const copyBtn = document.getElementById("copyBtn");
-            const noteContent = document.getElementById("noteContent");
+            const codeBlocks = document.querySelectorAll(".markdown pre");
 
-            if (!copyBtn || !noteContent) return;
+            codeBlocks.forEach((block) => {
 
-            copyBtn.addEventListener("click", async () => {
+                const code = block.querySelector("code");
+                if (!code) return;
 
-                const text = noteContent.innerText;
+                const button = document.createElement("button");
+                button.className = "code-copy-btn";
+                button.textContent = "Copy";
 
-                try {
+                button.onclick = async () => {
 
-                    if (navigator.clipboard && window.isSecureContext) {
+                    const text = code.innerText;
+
+                    try {
 
                         await navigator.clipboard.writeText(text);
 
-                    } else {
+                        button.textContent = "Copied";
 
-                        const temp = document.createElement("textarea");
-                        temp.value = text;
-                        document.body.appendChild(temp);
-                        temp.select();
-                        document.execCommand("copy");
-                        document.body.removeChild(temp);
+                        setTimeout(() => {
+                            button.textContent = "Copy";
+                        }, 1500);
 
+                    } catch {
+                        alert("Copy failed");
                     }
+                };
 
-                    const original = copyBtn.innerText;
-                    copyBtn.innerText = "Copied";
+                block.appendChild(button);
 
-                    setTimeout(() => {
-                        copyBtn.innerText = original;
-                    }, 1500);
+                const match = code.className.match(/language-(\w+)/);
 
-                } catch (err) {
-                    console.error(err);
-                    alert("Unable to copy text");
+                if (match) {
+
+                    const lang = document.createElement("span");
+                    lang.className = "code-lang";
+                    lang.textContent = match[1];
+
+                    block.appendChild(lang);
                 }
 
             });
