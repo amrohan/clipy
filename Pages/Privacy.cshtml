@@ -4,46 +4,110 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<main>
-    <header style="text-align:center;margin-bottom:4rem;">
-        <h1>@ViewData["Title"]</h1>
-        <p class="lead">Because even note-sharing apps need rules</p>
+<div class="max-w-4xl mx-auto p-4 space-y-6">
+
+    <header class="text-center mb-6">
+        <h1 class="text-3xl font-bold">@ViewData["Title"]</h1>
+        <p class="text-base-content/70">
+            Because even note-sharing apps need rules
+        </p>
     </header>
 
-    <section>
-        <h2>1. We Respect Your Notes</h2>
-        <p>
-            Your notes are yours. We don't peek — unless your note says "Delete me after reading" —
-            in that case, we obey.
-        </p>
+    <!-- Respect Notes -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">We Respect Your Notes</h2>
+            <p>
+                Your notes are yours. We don't peek — unless your note says
+                <strong>"Delete me after reading"</strong>. In that case,
+                we simply follow orders and remove it.
+            </p>
+        </div>
+    </div>
 
-        <h2>2. No Creepy Tracking</h2>
-        <p>
-            We don't track your IP like a hawk. We only store what's needed to deliver your note —
-            kind of like your nosy neighbor who just waves politely.
-        </p>
+    <!-- No Tracking -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">No Creepy Tracking</h2>
+            <p>
+                We are not interested in following you around the internet.
+                Clipy only stores the minimum information required to deliver
+                your note or file.
+            </p>
+        </div>
+    </div>
 
-        <h2>3. Custom Codes</h2>
-        <p>
-            You can choose your own code for your notes. Just don't pick "1234" — that's boring.
-            And yes, we'll tell you if your custom code is already taken 😂.
-        </p>
+    <!-- Custom Codes -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">Custom Codes</h2>
+            <p>
+                You can choose your own code for your notes. Just avoid
+                obvious ones like <strong>"1234"</strong>. If someone else
+                already grabbed your brilliant code idea, we'll politely
+                let you know.
+            </p>
+        </div>
+    </div>
 
-        <h2>4. Self-Destructing Notes</h2>
-        <p>
-            If you tick "Delete after view", we will self-destruct the note like a mini-movie explosion.
-            Refreshing the page means it's gone.
-        </p>
+    <!-- Self Destruct -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">Self-Destructing Notes</h2>
+            <p>
+                If you enable <strong>"Delete after view"</strong>, the note
+                disappears immediately after being opened. Refresh the page
+                and it will be gone. Think of it as the budget version of
+                spy-movie self-destruct messages.
+            </p>
+        </div>
+    </div>
 
-        <h2>5. Encryption</h2>
-        <p>
-            All notes are encrypted at rest using strong AES-256 encryption. This means that even if someone
-            got access to the database, your note content would still look like unreadable gibberish.
-        </p>
+    <!-- Encryption -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">Encryption</h2>
+            <p>
+                All notes are encrypted at rest using
+                <strong>AES-256 encryption</strong>. Even if someone accessed
+                the database directly, the content would appear as unreadable
+                scrambled text.
+            </p>
+        </div>
+    </div>
 
-        <h2>6. Cookies</h2>
-        <p>
-            We don't use cookies feel free to dunk them in milk 🍪.
-        </p>
-    </section>
-</main>
+    <!-- File Sharing -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">File Sharing</h2>
+            <p>
+                Files shared through Clipy are automatically deleted after
+                <strong>7 days</strong>. No backups are kept.
+            </p>
+
+            <p>
+                Why? Because Clipy runs on a very realistic budget:
+                approximately <strong>zero dollars</strong>.
+            </p>
+
+            <p>
+                Keeping files forever would require expensive storage.
+                Since Clipy is free to use, we clean things up regularly.
+                If a file is important, download it before the 7-day timer
+                sends it into the digital void.
+            </p>
+        </div>
+    </div>
+
+    <!-- Cookies -->
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+            <h2 class="card-title">Cookies</h2>
+            <p>
+                Clipy does not use tracking cookies. The only cookies you
+                should worry about are the edible ones.
+            </p>
+        </div>
+    </div>
+
+</div>

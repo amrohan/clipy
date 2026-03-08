@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="~/css/markdown.css"/>
     @* editor  *@
     <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/typography@0.5.19/src/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/overtype@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overtype@latest/dist/overtype.css">
+    <script src="https://cdn.jsdelivr.net/npm/overtype@latest/dist/overtype.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.14/iconfont/material-icons.min.css">
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
 
@@ -76,15 +77,15 @@
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
 
-                    <li>
+                    <li class="p-1.5">
                         <a asp-page="/AddNote">Create Note</a>
                     </li>
 
-                    <li>
+                    <li class="p-1.5">
                         <a asp-page="/ViewNote">View Note</a>
                     </li>
 
-                    <li>
+                    <li class="p-1.5">
                         <a asp-page="/Room">Start Room</a>
                     </li>
 

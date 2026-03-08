@@ -59,7 +59,7 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
 
         var code = string.IsNullOrWhiteSpace(Code)
             ? Guid.NewGuid().ToString("n").Substring(0, 6)
-            : Code;
+            : Code.ToLower();
 
         if (await db.Notes.AnyAsync(n => n.Code == code))
         {
