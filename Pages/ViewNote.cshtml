@@ -229,59 +229,73 @@
 
 </footer>
 
-
-@section Scripts {
-
+@section Scripts
+{
     <script>
-
         document.addEventListener("DOMContentLoaded", () => {
 
-            const codeBlocks = document.querySelectorAll(".markdown pre");
+            const copyBtn = document.getElementById("copyBtn");
+            const downloadBtn = document.getElementById("downloadBtn");
+            const noteContent = document.getElementById("noteContent");
 
-            codeBlocks.forEach((block) => {
+            if (!noteContent) return;
 
-                const code = block.querySelector("code");
-                if (!code) return;
+            // COPY BUTTON
+            if (copyBtn) {
+                copyBtn.addEventListener("click", async () => {
 
-                const button = document.createElement("button");
-                button.className = "code-copy-btn";
-                button.textContent = "Copy";
-
-                button.onclick = async () => {
-
-                    const text = code.innerText;
+                    const text = noteContent.innerText;
 
                     try {
 
-                        await navigator.clipboard.writeText(text);
+                        if (navigator.clipboard && window.isSecureContext) {
+                            await navigator.clipboard.writeText(text);
+                        } else {
+                            const temp = document.createElement("textarea");
+                            temp.value = text;
+                            document.body.appendChild(temp);
+                            temp.select();
+                            document.execCommand("copy");
+                            document.body.removeChild(temp);
+                        }
 
-                        button.textContent = "Copied";
+                        const original = copyBtn.innerText;
+                        copyBtn.innerText = "Copied";
 
                         setTimeout(() => {
-                            button.textContent = "Copy";
+                            copyBtn.innerText = original;
                         }, 1500);
 
-                    } catch {
-                        alert("Copy failed");
+                    } catch (err) {
+                        console.error(err);
+                        alert("Unable to copy text");
                     }
-                };
 
-                block.appendChild(button);
+                });
+            }
 
-                const match = code.className.match(/language-(\w+)/);
+            // DOWNLOAD BUTTON
+            if (downloadBtn) {
+                downloadBtn.addEventListener("click", () => {
 
-                if (match) {
+                    const text = noteContent.innerText;
 
-                    const lang = document.createElement("span");
-                    lang.className = "code-lang";
-                    lang.textContent = match[1];
+                    const blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+                    const url = URL.createObjectURL(blob);
 
-                    block.appendChild(lang);
-                }
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "clipy-note.txt";
 
-            });
+                    document.body.appendChild(a);
+                    a.click();
+
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                });
+            }
 
         });
     </script>
-
 }

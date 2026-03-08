@@ -115,6 +115,7 @@
 
 .markdown pre code {
     background: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     padding: 0;
 }
 
