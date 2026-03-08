@@ -15,10 +15,10 @@
 
     @if (Model.NoteUrl != null)
     {
-        <div class="card bg-base-100  border border-base-300">
+        <div class="card bg-base-100 border border-base-300">
             <div class="card-body">
 
-                <h2 class="card-title">Note Created </h2>
+                <h2 class="card-title">Note Created</h2>
                 <p class="text-base-content/70">
                     Your secure note URL is ready to share.
                 </p>
@@ -52,10 +52,11 @@
     }
     else
     {
-        <div class="card bg-base-100  border border-base-300">
+        <div class="card bg-base-100 border border-base-300">
             <div class="card-body">
 
                 <h2 class="card-title">Create Secure Note</h2>
+
                 <p class="text-base-content/70">
                     Write a note and share it securely. No accounts required.
                 </p>
@@ -66,17 +67,16 @@
 
                         <legend class="fieldset-legend">Note Content</legend>
 
+                        <div id="editor" class="min-h-[350px]"></div>
+
                         <textarea
-                            class="textarea textarea-bordered w-full h-40"
                             id="NoteContent"
                             name="NoteContent"
-                            placeholder="Type your note here..."
-                            required>@Model.NoteContent</textarea>
+                            class="absolute opacity-0 pointer-events-none h-0 w-0">@Model.NoteContent</textarea>
 
                         <span asp-validation-for="NoteContent" class="text-error text-sm"></span>
 
                     </fieldset>
-
 
                     <fieldset class="fieldset">
 
@@ -92,8 +92,7 @@ File automatically expires after 7 days
 
                     </fieldset>
 
-
-                    <div class="collapse collapse-arrow border border-base-300  bg-base-100">
+                    <div class="collapse collapse-arrow border border-base-300 bg-base-100">
 
                         <input type="checkbox"/>
 
@@ -120,7 +119,6 @@ File automatically expires after 7 days
 
                                 </fieldset>
 
-
                                 <fieldset class="fieldset">
 
                                     <legend class="fieldset-legend">Password</legend>
@@ -135,7 +133,6 @@ File automatically expires after 7 days
                                 </fieldset>
 
                             </div>
-
 
                             <fieldset class="fieldset">
 
@@ -164,7 +161,6 @@ File automatically expires after 7 days
 
                             </fieldset>
 
-
                             <fieldset class="fieldset">
 
                                 <label class="cursor-pointer label justify-start gap-4">
@@ -187,7 +183,6 @@ File automatically expires after 7 days
 
                     </div>
 
-
                     <button id="submitBtn" class="btn btn-primary w-full">
                         Save Note
                     </button>
@@ -200,135 +195,146 @@ File automatically expires after 7 days
 
 </div>
 
-@section Scripts {
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overtype@latest/dist/overtype.css">
+<script src="https://cdn.jsdelivr.net/npm/overtype@latest/dist/overtype.js"></script>
+
+<style>
+
+    .overtype-toolbar {
+        display: flex;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 4px;
+    }
+
+    .overtype-toolbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    @@media (max-width: 640px) {
+
+        .overtype-toolbar {
+            flex-wrap: wrap;
+        }
+
+        .overtype-toolbar-button {
+            padding: 4px 6px;
+            font-size: 12px;
+            min-height: 28px;
+        }
+
+        .overtype-toolbar button {
+            flex: 0 0 calc(12% - 8px);
+        }
+
+    }
+
+</style>
+
+@section Scripts{
+
     <script>
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener("DOMContentLoaded", () => {
 
-            const form = document.getElementById('noteForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const expirySelect = document.getElementById('ExpiryOption');
-            const customDateInput = document.getElementById('CustomExpiryDate');
+            const hiddenTextarea = document.getElementById("NoteContent")
 
-            if (expirySelect && customDateInput) {
+            const [editor] = new OverType("#editor", {
+                toolbar: true,
+                value: hiddenTextarea.value || ""
+            })
 
-                expirySelect.addEventListener('change', () => {
+            const form = document.getElementById("noteForm")
+            const submitBtn = document.getElementById("submitBtn")
 
-                    const isCustom = expirySelect.value === 'custom';
+            if (form) {
 
-                    customDateInput.classList.toggle('hidden', !isCustom);
-                    customDateInput.required = isCustom;
+                form.addEventListener("submit", (e) => {
 
-                });
+                    const content = editor.getValue()
 
-            }
+                    hiddenTextarea.value = content
 
-            if (form && submitBtn) {
-
-                form.addEventListener('submit', () => {
-
-                    if (form.checkValidity()) {
-
-                        submitBtn.classList.add("loading");
-                        submitBtn.disabled = true;
-
+                    if (!content.trim()) {
+                        e.preventDefault()
+                        alert("Note content cannot be empty")
+                        return
                     }
 
-                });
+                    submitBtn.classList.add("loading")
+                    submitBtn.disabled = true
+
+                })
 
             }
 
-            const copyBtn = document.getElementById('copyBtn');
-            const noteContent = document.getElementById('noteContent');
+            const expirySelect = document.getElementById("ExpiryOption")
+            const customDateInput = document.getElementById("CustomExpiryDate")
+
+            if (expirySelect) {
+
+                expirySelect.addEventListener("change", () => {
+
+                    const isCustom = expirySelect.value === "custom"
+
+                    customDateInput.classList.toggle("hidden", !isCustom)
+                    customDateInput.required = isCustom
+
+                })
+
+            }
+
+            const copyBtn = document.getElementById("copyBtn")
+            const noteContent = document.getElementById("noteContent")
 
             if (copyBtn && noteContent) {
 
-                copyBtn.addEventListener('click', () => {
+                copyBtn.addEventListener("click", () => {
 
-                    const text = noteContent.innerText || noteContent.textContent;
+                    const text = noteContent.innerText
 
-                    if (!text) return;
+                    navigator.clipboard.writeText(text).then(() => {
 
-                    if (navigator.clipboard && window.isSecureContext) {
+                        copyBtn.classList.add("btn-success")
+                        copyBtn.textContent = "Copied"
 
-                        navigator.clipboard.writeText(text)
-                            .then(showSuccess)
-                            .catch(() => fallbackCopy(text));
+                        setTimeout(() => {
+                            copyBtn.classList.remove("btn-success")
+                            copyBtn.textContent = "Copy"
+                        }, 1500)
 
-                    } else {
+                    })
 
-                        fallbackCopy(text);
-
-                    }
-
-                });
+                })
 
             }
 
-            function fallbackCopy(text) {
-
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-
-                document.body.appendChild(textArea);
-
-                textArea.focus();
-                textArea.select();
-
-                try {
-                    document.execCommand("copy");
-                    showSuccess();
-                } catch {
-                }
-
-                document.body.removeChild(textArea);
-
-            }
-
-            function showSuccess() {
-
-                copyBtn.classList.add("btn-success");
-                copyBtn.textContent = "Copied";
-
-                setTimeout(() => {
-
-                    copyBtn.classList.remove("btn-success");
-                    copyBtn.textContent = "Copy";
-
-                }, 1500);
-
-            }
-
-            const shareMenu = document.getElementById('shareMenu');
-            const shareBtn = document.getElementById('shareBtn');
+            const shareMenu = document.getElementById("shareMenu")
+            const shareBtn = document.getElementById("shareBtn")
 
             if (shareMenu && shareBtn && navigator.share && noteContent) {
 
-                shareMenu.classList.remove('hidden');
+                shareMenu.classList.remove("hidden")
 
-                shareBtn.addEventListener('click', async () => {
+                shareBtn.addEventListener("click", async () => {
 
                     try {
 
                         await navigator.share({
-
-                            title: 'Secure Note',
-                            text: 'Here is a secure note',
+                            title: "Secure Note",
+                            text: "Here is a secure note",
                             url: noteContent.innerText
-
-                        });
+                        })
 
                     } catch {
                     }
 
-                });
+                })
 
             }
 
-        });
+        })
 
     </script>
+
 }

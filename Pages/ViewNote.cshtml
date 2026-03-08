@@ -1,17 +1,28 @@
 @page
 @model ViewNoteModel
+@using Markdig
+
 @{
     ViewData["Title"] = "View Note";
+
+    var pipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .Build();
+
+    var htmlContent = Model.Note != null
+        ? Markdown.ToHtml(Model.Note.Content ?? "", pipeline)
+        : "";
 }
 
 <div class="max-w-5xl mx-auto p-4 min-h-[70dvh]">
 
     @if (Model.RequiresPassword)
     {
-        <div class="card bg-base-100  border border-base-300">
+        <div class="card bg-base-100 border border-base-300">
             <div class="card-body">
 
                 <h2 class="card-title">Password Required</h2>
+
                 <p class="text-base-content/70">
                     This note is protected. Enter the password to continue.
                 </p>
@@ -50,17 +61,18 @@
             </div>
         </div>
     }
+
     else if (Model.ShowConfirmation)
     {
-        <div class="card bg-base-100  border border-base-300">
+        <div class="card bg-base-100 border border-base-300">
             <div class="card-body">
 
                 <h2 class="card-title">Confirm View</h2>
 
                 <div class="alert alert-warning">
-                    <span>
-                        ⚠ This note will be permanently deleted after you view it.
-                    </span>
+                <span>
+                    ⚠ This note will be permanently deleted after you view it.
+                </span>
                 </div>
 
                 <p class="text-base-content/70">
@@ -81,6 +93,7 @@
             </div>
         </div>
     }
+
     else if (Model.Note != null)
     {
         <div class="card bg-base-100 border border-base-300">
@@ -95,10 +108,9 @@
 
                         @if (Model.Note.FileName != null)
                         {
-                            <a
-                                asp-page="/Download"
-                                asp-route-code="@Model.Note.Code"
-                                class="btn btn-outline btn-sm">
+                            <a asp-page="/Download"
+                               asp-route-code="@Model.Note.Code"
+                               class="btn btn-outline btn-sm">
                                 Download File
                             </a>
                         }
@@ -118,26 +130,38 @@
                 @if (Model.JustViewedDeletableNote)
                 {
                     <div class="alert alert-warning mt-3">
-                        <span>
-                            ⚠ This note will be deleted if you refresh or leave this page.
-                        </span>
+                    <span>
+                        ⚠ This note will be deleted if you refresh or leave this page.
+                    </span>
                     </div>
                 }
 
-                <div class="mockup-code mt-4">
-                    <pre class="px-6 md:px-10"><code id="noteContent">@Model.Note.Content</code></pre>
+                <!-- Markdown Render -->
+                <div class="mt-6">
+
+                    <article
+                        id="noteContent"
+                        class="markdown max-w-none">
+
+                        @Html.Raw(htmlContent)
+
+                    </article>
+
                 </div>
 
             </div>
+
         </div>
     }
+
     else
     {
-        <div class="card bg-base-100  border border-base-300">
+        <div class="card bg-base-100 border border-base-300">
 
             <div class="card-body">
 
                 <h2 class="card-title">Find Your Note</h2>
+
                 <p class="text-base-content/70">
                     Enter your note code to view it.
                 </p>
@@ -173,6 +197,7 @@
                 </form>
 
             </div>
+
         </div>
     }
 
@@ -204,7 +229,9 @@
 
 </footer>
 
+
 @section Scripts {
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
@@ -249,6 +276,6 @@
             });
 
         });
-
     </script>
+
 }
