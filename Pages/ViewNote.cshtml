@@ -29,19 +29,13 @@
 
                 <form method="post" asp-page-handler="Password" id="passwordForm" class="space-y-4">
 
-                    <input type="hidden" name="Code" value="@Model.Code"/>
+                    <input type="hidden" name="Code" value="@Model.Code" />
 
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Password</legend>
 
-                        <input
-                            type="password"
-                            name="SubmittedPassword"
-                            id="SubmittedPassword"
-                            placeholder="Enter password"
-                            class="input input-bordered w-full"
-                            required
-                            @(Model.PasswordAttempted ? "autofocus aria-invalid=true" : "")>
+                        <input type="password" name="SubmittedPassword" id="SubmittedPassword" placeholder="Enter password"
+                               class="input input-bordered w-full" required @(Model.PasswordAttempted ? "autofocus aria-invalid=true" : "")>
 
                         @if (Model.PasswordAttempted)
                         {
@@ -70,9 +64,9 @@
                 <h2 class="card-title">Confirm View</h2>
 
                 <div class="alert alert-warning">
-                <span>
-                    ⚠ This note will be permanently deleted after you view it.
-                </span>
+                    <span>
+                        ⚠ This note will be permanently deleted after you view it.
+                    </span>
                 </div>
 
                 <p class="text-base-content/70">
@@ -82,7 +76,7 @@
 
                 <form method="post" asp-page-handler="Confirm" id="confirmForm">
 
-                    <input type="hidden" name="Code" value="@Model.Code"/>
+                    <input type="hidden" name="Code" value="@Model.Code" />
 
                     <button type="submit" id="confirmBtn" class="btn btn-error w-full">
                         Show Me the Note
@@ -108,9 +102,7 @@
 
                         @if (Model.Note.FileName != null)
                         {
-                            <a asp-page="/Download"
-                               asp-route-code="@Model.Note.Code"
-                               class="btn btn-outline btn-sm">
+                            <a asp-page="/Download" asp-route-code="@Model.Note.Code" class="btn btn-outline btn-sm">
                                 Download File
                             </a>
                         }
@@ -130,18 +122,16 @@
                 @if (Model.JustViewedDeletableNote)
                 {
                     <div class="alert alert-warning mt-3">
-                    <span>
-                        ⚠ This note will be deleted if you refresh or leave this page.
-                    </span>
+                        <span>
+                            ⚠ This note will be deleted if you refresh or leave this page.
+                        </span>
                     </div>
                 }
 
                 <!-- Markdown Render -->
                 <div class="mt-6">
 
-                    <article
-                        id="noteContent"
-                        class="markdown max-w-none">
+                    <article id="noteContent" class="markdown max-w-none">
 
                         @Html.Raw(htmlContent)
 
@@ -172,14 +162,8 @@
 
                         <legend class="fieldset-legend">Note Code</legend>
 
-                        <input
-                            type="text"
-                            id="Code"
-                            name="code"
-                            placeholder="Enter your code"
-                            class="input input-bordered w-full"
-                            required
-                            @(Model.AttemptedAndNotFound ? "aria-invalid=true" : "")>
+                        <input type="text" id="Code" name="code" placeholder="Enter your code"
+                               class="input input-bordered w-full" required @(Model.AttemptedAndNotFound ? "aria-invalid=true" : "")>
 
                         @if (Model.AttemptedAndNotFound)
                         {
@@ -280,7 +264,7 @@
 
                     const text = noteContent.innerText;
 
-                    const blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+                    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
                     const url = URL.createObjectURL(blob);
 
                     const a = document.createElement("a");

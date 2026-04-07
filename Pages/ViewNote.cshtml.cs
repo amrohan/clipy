@@ -21,13 +21,21 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
     public async Task<IActionResult> OnGetAsync()
     {
         CurrentYear = DateTime.Now.Year;
-        
+
         if (string.IsNullOrWhiteSpace(Code))
             return Page();
 
-        var note = await db.Notes.FirstOrDefaultAsync(n => n.Code == Code && n.IsActive);
+        var note = await db.Notes
+            .FirstOrDefaultAsync(n =>
+                n.Code.ToLower() == Code.ToLower() && n.IsActive);
 
         if (note == null)
+        {
+            AttemptedAndNotFound = true;
+            return Page();
+        }
+
+        if (note.ExpiryDateUtc.HasValue && note.ExpiryDateUtc <= DateTime.UtcNow)
         {
             AttemptedAndNotFound = true;
             return Page();
@@ -49,8 +57,10 @@ public class ViewNoteModel(AppDbContext db, IEncryptionService encryptionService
         if (note.DeleteAfterView && !note.Viewed)
         {
             ShowConfirmation = true;
+
             if (note.IsEncrypted)
                 note.Content = encryptionService.Decrypt(note.Content);
+
             return Page();
         }
 
