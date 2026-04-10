@@ -53,12 +53,6 @@
     else
     {
         <div class="card bg-base-100 border border-base-300">
-            <div class="p-6">
-                <span class="material-symbols-outlined">
-                    keyboard_backspace
-                </span>
-                <a type="button" href="/">Back</a>
-            </div>
 
             <div class="card-body">
                 <h2 class="card-title">Create Secure Note</h2>
@@ -75,10 +69,8 @@
 
                         <div id="editor" class="min-h-[350px]"></div>
 
-                        <textarea
-                            id="NoteContent"
-                            name="NoteContent"
-                            class="absolute opacity-0 pointer-events-none h-0 w-0">@Model.NoteContent</textarea>
+                        <textarea id="NoteContent" name="NoteContent"
+                                  class="absolute opacity-0 pointer-events-none h-0 w-0">@Model.NoteContent</textarea>
 
                         <span asp-validation-for="NoteContent" class="text-error text-sm"></span>
 
@@ -91,9 +83,9 @@
                         <input type="file" asp-for="UploadFile" class="file-input file-input-bordered w-full"/>
 
                         <label class="label">
-                            <span class="label-text-alt">
-                                File automatically expires after 7 days
-                            </span>
+                                <span class="label-text-alt">
+                                    File automatically expires after 7 days
+                                </span>
                         </label>
 
                     </fieldset>
@@ -114,14 +106,9 @@
 
                                     <legend class="fieldset-legend">Custom Code</legend>
 
-                                    <input
-                                        type="text"
-                                        class="input input-bordered w-full lowercase"
-                                        id="Code"
-                                        name="Code"
-                                        maxlength="10"
-                                        placeholder="meeting-notes"
-                                        value="@Model.Code">
+                                    <input type="text" class="input input-bordered w-full lowercase" id="Code"
+                                           name="Code"
+                                           maxlength="10" placeholder="meeting-notes" value="@Model.Code">
 
                                 </fieldset>
 
@@ -129,12 +116,9 @@
 
                                     <legend class="fieldset-legend">Password</legend>
 
-                                    <input
-                                        type="password"
-                                        class="input input-bordered w-full"
-                                        id="Password"
-                                        name="Password"
-                                        placeholder="Optional password">
+                                    <input type="password" class="input input-bordered w-full" id="Password"
+                                           name="Password"
+                                           placeholder="Optional password">
 
                                 </fieldset>
 
@@ -154,12 +138,9 @@
                                         <option value="custom">Custom Date</option>
                                     </select>
 
-                                    <input
-                                        type="date"
-                                        id="CustomExpiryDate"
-                                        name="CustomExpiryDate"
-                                        class="input input-bordered w-full hidden"
-                                        min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                                    <input type="date" id="CustomExpiryDate" name="CustomExpiryDate"
+                                           class="input input-bordered w-full hidden"
+                                           min="@DateTime.Today.ToString("yyyy-MM-dd")">
 
                                 </div>
 
@@ -173,13 +154,8 @@
 
                                     <span class="label-text">Delete after first view</span>
 
-                                    <input
-                                        type="checkbox"
-                                        id="DeleteAfterView"
-                                        name="DeleteAfterView"
-                                        value="true"
-                                        class="toggle toggle-primary"
-                                        @(Model.DeleteAfterView ? "checked" : "")>
+                                    <input type="checkbox" id="DeleteAfterView" name="DeleteAfterView" value="true"
+                                           class="toggle toggle-primary" @(Model.DeleteAfterView ? "checked" : "")>
 
                                 </label>
 
@@ -203,7 +179,6 @@
 
 
 <style>
-
     .overtype-toolbar {
         display: flex;
         overflow-x: auto;
@@ -232,10 +207,9 @@
         }
 
     }
-
 </style>
 
-@section Scripts{
+@section Scripts {
 
     <script>
 
