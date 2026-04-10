@@ -10,7 +10,7 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
     : PageModel
 {
     [BindProperty, Required(ErrorMessage = "Note content is required.")]
-    public required string NoteContent { get; set; }
+    public string NoteContent { get; set; } = string.Empty;
 
     [BindProperty] public string? Code { get; set; }
 
@@ -29,21 +29,17 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
     public string? NoteUrl { get; set; }
     public string? ErrorMessage { get; set; }
 
+    public void OnGet()
+    {
+        if (TempData.ContainsKey("NoteUrl"))
+        {
+            NoteUrl = TempData["NoteUrl"]?.ToString();
+        }
+    }
+
     public async Task<IActionResult> OnPostAsync()
     {
         IsLoading = true;
-
-        string? storedFileName = null;
-        string? originalFileName = null;
-
-        if (UploadFile != null && UploadFile.Length > 0)
-        {
-            originalFileName = UploadFile.FileName;
-            await using var stream = UploadFile.OpenReadStream();
-
-            storedFileName = $"{Guid.NewGuid()}_{UploadFile.FileName}";
-            await storage.UploadAsync(UploadFile, storedFileName);
-        }
 
         if (ExpiryOption == "custom" && (!CustomExpiryDate.HasValue || CustomExpiryDate.Value < DateTime.Today))
         {
@@ -68,10 +64,19 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
             return Page();
         }
 
+        string? storedFileName = null;
+        string? originalFileName = null;
+
+        if (UploadFile != null && UploadFile.Length > 0)
+        {
+            originalFileName = UploadFile.FileName;
+            storedFileName = $"{Guid.NewGuid()}_{UploadFile.FileName}";
+            await storage.UploadAsync(UploadFile, storedFileName);
+        }
+
         string? hashedPassword = !string.IsNullOrWhiteSpace(Password)
             ? BCrypt.Net.BCrypt.HashPassword(Password)
             : null;
-
 
         DateTime? expiryDateUtc = null;
         switch (ExpiryOption)
@@ -90,11 +95,11 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
                 break;
         }
 
-        string encyptedContent = encryptionService.Encrypt(NoteContent);
+        string encryptedContent = encryptionService.Encrypt(NoteContent);
 
         var note = new Note
         {
-            Content = encyptedContent,
+            Content = encryptedContent,
             Code = code,
             Password = hashedPassword,
             DeleteAfterView = DeleteAfterView,
@@ -107,10 +112,8 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
         db.Notes.Add(note);
         await db.SaveChangesAsync();
 
-        NoteUrl = Url.Page("/ViewNote", null, new { code = code }, Request.Scheme);
-        IsLoading = false;
-        ModelState.Clear();
+        TempData["NoteUrl"] = Url.Page("/ViewNote", null, new { code = code }, Request.Scheme);
 
-        return Page();
+        return RedirectToPage();
     }
 }
