@@ -32,12 +32,8 @@
                     </div>
 
                     <div class="mockup-code">
-                        <pre><code id="noteContent">@Model.NoteUrl</code></pre>
+                        <pre><code id="noteContent">@Model.NoteUrl.Trim()</code></pre>
                     </div>
-
-                    <a asp-route="/" class="btn btn-primary w-full mt-4">
-                        Create New Note
-                    </a>
 
                 </div>
 
@@ -46,6 +42,13 @@
 
         <div id="shareMenu" class="fixed bottom-6 left-1/2 -translate-x-1/2 hidden">
             <button id="shareBtn" class="btn btn-primary btn-wide shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="size-4">
+                    <path d="M12 2v13"/>
+                    <path d="m16 6-4-4-4 4"/>
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                </svg>
                 Share Note
             </button>
         </div>
@@ -64,73 +67,48 @@
                 <form method="post" enctype="multipart/form-data" id="noteForm" class="space-y-4">
 
                     <fieldset class="fieldset">
-
                         <legend class="fieldset-legend">Note Content</legend>
-
                         <div id="editor" class="min-h-[350px]"></div>
-
                         <textarea id="NoteContent" name="NoteContent"
                                   class="absolute opacity-0 pointer-events-none h-0 w-0">@Model.NoteContent</textarea>
-
                         <span asp-validation-for="NoteContent" class="text-error text-sm"></span>
-
                     </fieldset>
 
                     <fieldset class="fieldset">
-
                         <legend class="fieldset-legend">Attach File</legend>
-
                         <input id="file-input" type="file" asp-for="UploadFile"
                                class="file-input file-input-bordered w-full"/>
-
                         <label class="label">
                                 <span class="label-text-alt">
                                     File automatically expires after 7 days
                                 </span>
                         </label>
-
                     </fieldset>
 
                     <div class="collapse collapse-arrow border border-base-300 bg-base-100">
-
                         <input type="checkbox"/>
-
                         <div class="collapse-title font-medium">
                             Advanced Options
                         </div>
-
                         <div class="collapse-content space-y-4">
-
                             <div class="grid md:grid-cols-2 gap-4">
-
                                 <fieldset class="fieldset">
-
                                     <legend class="fieldset-legend">Custom Code</legend>
-
                                     <input type="text" class="input input-bordered w-full lowercase" id="Code"
                                            name="Code"
                                            maxlength="10" placeholder="meeting-notes" value="@Model.Code">
-
                                 </fieldset>
-
                                 <fieldset class="fieldset">
-
                                     <legend class="fieldset-legend">Password</legend>
-
                                     <input type="password" class="input input-bordered w-full" id="Password"
                                            name="Password"
                                            placeholder="Optional password">
-
                                 </fieldset>
-
                             </div>
 
                             <fieldset class="fieldset">
-
                                 <legend class="fieldset-legend">Auto Delete</legend>
-
                                 <div class="grid md:grid-cols-2 gap-4">
-
                                     <select id="ExpiryOption" name="ExpiryOption" class="select select-bordered w-full">
                                         <option value="never" selected>Never</option>
                                         <option value="1h">1 Hour</option>
@@ -138,37 +116,26 @@
                                         <option value="7d">7 Days</option>
                                         <option value="custom">Custom Date</option>
                                     </select>
-
                                     <input type="date" id="CustomExpiryDate" name="CustomExpiryDate"
                                            class="input input-bordered w-full hidden"
                                            min="@DateTime.Today.ToString("yyyy-MM-dd")">
-
                                 </div>
-
                                 <span asp-validation-for="CustomExpiryDate" class="text-error text-sm"></span>
-
                             </fieldset>
 
                             <fieldset class="fieldset">
-
                                 <label class="cursor-pointer label justify-start gap-4">
-
                                     <span class="label-text">Delete after first view</span>
-
                                     <input type="checkbox" id="DeleteAfterView" name="DeleteAfterView" value="true"
                                            class="toggle toggle-primary" @(Model.DeleteAfterView ? "checked" : "")>
-
                                 </label>
-
                             </fieldset>
-
                         </div>
-
                     </div>
 
-                    <button id="submitBtn" class="btn btn-primary w-full">
+                    <button id="submitBtn" type="submit" class="btn btn-primary w-full">
                         <span id="loadingSpinner" class="loading loading-dots loading-xl hidden"></span>
-                        Save Note
+                        <span id="btnText">Save Note</span>
                     </button>
 
                 </form>
@@ -178,7 +145,6 @@
     }
 
 </div>
-
 
 <style>
     .overtype-toolbar {
@@ -193,7 +159,6 @@
     }
 
     @@media (max-width: 640px) {
-
         .overtype-toolbar {
             flex-wrap: wrap;
         }
@@ -207,127 +172,134 @@
         .overtype-toolbar button {
             flex: 0 0 calc(12% - 8px);
         }
-
     }
 </style>
 
 @section Scripts {
-
     <script>
-
         document.addEventListener("DOMContentLoaded", () => {
 
-            const hiddenTextarea = document.getElementById("NoteContent")
+            const hiddenTextarea = document.getElementById("NoteContent");
+            let editorInstance = null;
 
-            const [editor] = new OverType("#editor", {
-                toolbar: true,
-                value: hiddenTextarea.value || ""
-            })
+            if (document.getElementById("editor")) {
+                const [editor] = new OverType("#editor", {
+                    toolbar: true,
+                    value: hiddenTextarea.value || ""
+                });
+                editorInstance = editor;
+            }
 
-            const form = document.getElementById("noteForm")
-            const submitBtn = document.getElementById("submitBtn")
+            const form = document.getElementById("noteForm");
+            const submitBtn = document.getElementById("submitBtn");
             const loadingSpinner = document.getElementById("loadingSpinner");
+            const btnText = document.getElementById("btnText");
 
             if (form) {
-
                 form.addEventListener("submit", (e) => {
-
-                    const content = editor.getValue()
-
-                    hiddenTextarea.value = content
+                    const content = editorInstance ? editorInstance.getValue() : "";
+                    hiddenTextarea.value = content;
 
                     if (!content.trim()) {
-                        e.preventDefault()
-                        alert("Note content cannot be empty")
-                        return
+                        e.preventDefault();
+                        alert("Note content cannot be empty");
+                        return;
                     }
 
-                    loadingSpinner.classList.remove("hidden")
-                    submitBtn.disabled = true
-
-                })
-
+                    loadingSpinner.classList.remove("hidden");
+                    btnText.classList.add("hidden");
+                    submitBtn.disabled = true;
+                });
             }
 
             const fileInput = document.getElementById("file-input");
-
-            if (fileInput) {
+            if (fileInput && editorInstance) {
                 fileInput.addEventListener("change", (e) => {
                     const file = e.target.files[0];
-                    console.log(file.name);
-                    if (file.name !== "") {
-                        editor.setValue(`### Attachment\n - You have attached a file:- ${file.name}`);
+                    if (file) {
+                        const currentVal = editorInstance.getValue();
+                        editorInstance.setValue(`${currentVal}\n\n### Attachment\n- Attached file: ${file.name}`);
                     }
                 });
             }
 
-            const expirySelect = document.getElementById("ExpiryOption")
-            const customDateInput = document.getElementById("CustomExpiryDate")
-
+            const expirySelect = document.getElementById("ExpiryOption");
+            const customDateInput = document.getElementById("CustomExpiryDate");
             if (expirySelect) {
-
                 expirySelect.addEventListener("change", () => {
-
-                    const isCustom = expirySelect.value === "custom"
-
-                    customDateInput.classList.toggle("hidden", !isCustom)
-                    customDateInput.required = isCustom
-
-                })
-
+                    const isCustom = expirySelect.value === "custom";
+                    customDateInput.classList.toggle("hidden", !isCustom);
+                    customDateInput.required = isCustom;
+                });
             }
 
-            const copyBtn = document.getElementById("copyBtn")
-            const noteContent = document.getElementById("noteContent")
+            const copyBtn = document.getElementById("copyBtn");
+            const noteContent = document.getElementById("noteContent");
 
             if (copyBtn && noteContent) {
-
                 copyBtn.addEventListener("click", () => {
+                    const textToCopy = noteContent.textContent.trim();
 
-                    const text = noteContent.innerText
-
-                    navigator.clipboard.writeText(text).then(() => {
-
-                        copyBtn.classList.add("btn-success")
-                        copyBtn.textContent = "Copied"
-
-                        setTimeout(() => {
-                            copyBtn.classList.remove("btn-success")
-                            copyBtn.textContent = "Copy"
-                        }, 1500)
-
-                    })
-
-                })
-
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            updateCopyButtonState(copyBtn);
+                        }).catch(err => {
+                            console.error('Clipboard error:', err);
+                            fallbackCopy(textToCopy, copyBtn);
+                        });
+                    } else {
+                        fallbackCopy(textToCopy, copyBtn);
+                    }
+                });
             }
 
-            const shareMenu = document.getElementById("shareMenu")
-            const shareBtn = document.getElementById("shareBtn")
+            function fallbackCopy(text, btn) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    updateCopyButtonState(btn);
+                } catch (err) {
+                    console.error('Fallback copy failed', err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            function updateCopyButtonState(btn) {
+                const originalText = btn.textContent;
+                btn.classList.add("btn-primary");
+                btn.textContent = "Copied!";
+
+                setTimeout(() => {
+                    btn.classList.remove("btn-primary");
+                    btn.textContent = originalText;
+                }, 2000);
+            }
+
+            // Share API
+            const shareMenu = document.getElementById("shareMenu");
+            const shareBtn = document.getElementById("shareBtn");
 
             if (shareMenu && shareBtn && navigator.share && noteContent) {
-
-                shareMenu.classList.remove("hidden")
-
+                shareMenu.classList.remove("hidden");
                 shareBtn.addEventListener("click", async () => {
-
                     try {
-
                         await navigator.share({
                             title: "Secure Note",
-                            text: "Here is a secure note",
-                            url: noteContent.innerText
-                        })
-
-                    } catch {
+                            text: "Here is a secure note link:",
+                            url: noteContent.textContent.trim()
+                        });
+                    } catch (err) {
+                        console.log("Share cancelled or failed", err);
                     }
-
-                })
-
+                });
             }
-
-        })
-
+        });
     </script>
-
 }
