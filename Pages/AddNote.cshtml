@@ -167,6 +167,7 @@
                     </div>
 
                     <button id="submitBtn" class="btn btn-primary w-full">
+                        <span id="loadingSpinner" class="loading loading-dots loading-xl hidden"></span>
                         Save Note
                     </button>
 
@@ -225,6 +226,7 @@
 
             const form = document.getElementById("noteForm")
             const submitBtn = document.getElementById("submitBtn")
+            const loadingSpinner = document.getElementById("loadingSpinner");
 
             if (form) {
 
@@ -240,7 +242,7 @@
                         return
                     }
 
-                    submitBtn.classList.add("loading")
+                    loadingSpinner.classList.remove("hidden")
                     submitBtn.disabled = true
 
                 })

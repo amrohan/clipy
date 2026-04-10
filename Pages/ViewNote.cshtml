@@ -95,7 +95,7 @@
 
             <div class="card-body">
 
-                <div class="flex justify-between items-center flex-wrap gap-2">
+                <div class="flex justify-between items-center w-full flex-wrap gap-4">
 
                     <h2 class="card-title">Shared Note</h2>
 
@@ -103,18 +103,39 @@
 
                         @if (Model.Note.FileName != null)
                         {
-                            <a asp-page="/Download" asp-route-code="@Model.Note.Code" class="btn btn-outline btn-sm">
-                                Download File
-                            </a>
+                            <div class="tooltip" data-tip="Download attached file">
+                                <a asp-page="/Download" asp-route-code="@Model.Note.Code"
+                                   class="btn btn-primary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         class="size-4">
+                                        <path d="M12 13v8l-4-4"/>
+                                        <path d="m12 21 4-4"/>
+                                        <path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"/>
+                                    </svg>
+                                    File
+                                </a>
+                            </div>
                         }
 
-                        <button id="downloadBtn" class="btn btn-outline btn-sm">
-                            Download
-                        </button>
+                        <div class="tooltip" data-tip="Download this note">
+                            <button id="downloadBtn" class="btn btn-outline btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="size-4">
+                                    <path
+                                        d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>
+                                </svg>
+                                Note
+                            </button>
+                        </div>
 
-                        <button id="copyBtn" class="btn btn-outline btn-sm">
-                            Copy
-                        </button>
+                        <div class="tooltip" data-tip="Copy note content">
+                            <button id="copyBtn" class="btn btn-outline btn-sm">
+                                Copy
+                            </button>
+                        </div>
 
                     </div>
 
@@ -131,7 +152,9 @@
 
                 <!-- Markdown Render -->
                 <div class="mt-6">
-
+                    <textarea id="rawMarkdown" class="hidden">
+                        @Model.Note.Content
+                    </textarea>
                     <article id="noteContent" class="markdown max-w-none">
 
                         @Html.Raw(htmlContent)
@@ -223,14 +246,21 @@
             const copyBtn = document.getElementById("copyBtn");
             const downloadBtn = document.getElementById("downloadBtn");
             const noteContent = document.getElementById("noteContent");
+            const rawMarkdown = document.getElementById("rawMarkdown");
 
             if (!noteContent) return;
 
+            const getContent = () => {
+                if (rawMarkdown && rawMarkdown.value.trim() !== "") {
+                    return rawMarkdown.value;
+                }
+                return noteContent.innerText;
+            };
             // COPY BUTTON
             if (copyBtn) {
                 copyBtn.addEventListener("click", async () => {
 
-                    const text = noteContent.innerText;
+                    const text = getContent();
 
                     try {
 
@@ -246,7 +276,7 @@
                         }
 
                         const original = copyBtn.innerText;
-                        copyBtn.innerText = "Copied";
+                        copyBtn.innerText = "Copied ✓";
 
                         setTimeout(() => {
                             copyBtn.innerText = original;
@@ -259,6 +289,7 @@
 
                 });
             }
+
 
             // DOWNLOAD BUTTON
             if (downloadBtn) {
