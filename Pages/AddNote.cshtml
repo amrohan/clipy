@@ -80,7 +80,8 @@
 
                         <legend class="fieldset-legend">Attach File</legend>
 
-                        <input type="file" asp-for="UploadFile" class="file-input file-input-bordered w-full"/>
+                        <input id="file-input" type="file" asp-for="UploadFile"
+                               class="file-input file-input-bordered w-full"/>
 
                         <label class="label">
                                 <span class="label-text-alt">
@@ -244,6 +245,18 @@
 
                 })
 
+            }
+
+            const fileInput = document.getElementById("file-input");
+
+            if (fileInput) {
+                fileInput.addEventListener("change", (e) => {
+                    const file = e.target.files[0];
+                    console.log(file.name);
+                    if (file.name !== "") {
+                        editor.setValue(`### Attachment\n - You have attached a file:- ${file.name}`);
+                    }
+                });
             }
 
             const expirySelect = document.getElementById("ExpiryOption")
