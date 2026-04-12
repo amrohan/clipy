@@ -58,72 +58,148 @@
     }
     else
     {
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach (var item in Model.Notes)
             {
+                var isExpiringSoon = !item.IsExpired && item.Note.ExpiryDateUtc.HasValue
+                                                         && item.Note.ExpiryDateUtc.Value < DateTime.UtcNow.AddDays(7);
+                var daysLeft = item.Note.ExpiryDateUtc.HasValue
+                    ? (int)(item.Note.ExpiryDateUtc.Value - DateTime.UtcNow).TotalDays
+                    : (int?)null;
+
                 <div
-                    class="card bg-base-100 shadow-lg border @(item.IsExpired ? "border-error/30 opacity-80" : "border-base-300") transition-transform hover:scale-[1.02]">
-                    <div class="card-body p-5">
+                    class="card bg-base-100 border @(item.IsExpired ? "border-error/40 opacity-80" : "border-base-300") hover:-translate-y-0.5 transition-all duration-150">
+                    <div class="card-body p-5 gap-3">
 
-                        <!-- Header: Code & Security Info -->
-                        <div class="flex justify-between items-start mb-2">
+                        <div class="flex justify-between items-start">
                             <span
-                                class="font-mono text-xs font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">#@item.Note.Code</span>
-
-                            <div class="flex gap-1">
+                                class="font-mono text-xs font-bold bg-base-200 text-base-content/60 px-2 py-1 rounded">#@item.Note.Code</span>
+                            <div class="flex flex-wrap gap-1 justify-end">
                                 @if (item.Note.IsEncrypted)
                                 {
-                                    <div class="badge badge-outline badge-xs tooltip"
-                                         data-tip="Encrypted: Content safe but not searchable">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20"
-                                             fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                                  clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
+                                    <span class="badge badge-outline badge-xs gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20"
+                                     fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                Encrypted
+                            </span>
                                 }
-                                <span
-                                    class="badge @(item.IsExpired ? "badge-error" : "badge-success") badge-sm text-[10px]">
-                                    @(item.IsExpired ? "Expired" : "Active")
-                                </span>
+                                @if (!string.IsNullOrEmpty(item.Note.Password))
+                                {
+                                    <span class="badge badge-warning badge-xs gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20"
+                                     fill="currentColor">
+                                    <path
+                                        d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 016 0v1h2V7a5 5 0 00-5-5z"/>
+                                </svg>
+                                Password
+                            </span>
+                                }
+                                @if (item.Note.DeleteAfterView)
+                                {
+                                    <span class="badge badge-error badge-xs gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-2.5 w-2.5" viewBox="0 0 20 20"
+                                     fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                Self-destructs
+                            </span>
+                                }
+                                @if (item.Note.Viewed)
+                                {
+                                    <span class="badge badge-ghost badge-xs">Viewed</span>
+                                }
+                                <span class="badge @(item.IsExpired ? "badge-error" : "badge-success") badge-xs">
+                            @(item.IsExpired ? "Expired" : "Active")
+                        </span>
                             </div>
                         </div>
 
-                        <!-- Content Preview -->
-                        <div class="bg-base-200/50 rounded-lg p-3 min-h-[100px] border border-base-200">
-                            <p class="text-sm line-clamp-3 italic opacity-80 break-words leading-relaxed">
+                        <div class="bg-base-200/60 rounded-lg p-3 min-h-[80px] border border-base-200">
+                            <p class="text-sm line-clamp-3 italic opacity-75 break-words leading-relaxed">
                                 @item.DecryptedContent
                             </p>
                         </div>
 
-                        <!-- File Info -->
                         @if (!string.IsNullOrEmpty(item.Note.OriginalFileName))
                         {
                             <div
-                                class="flex items-center gap-2 text-[11px] text-info font-medium mt-3 bg-info/5 p-2 rounded">
-                                📎 <span class="truncate">@item.Note.OriginalFileName</span>
+                                class="flex items-center gap-2 text-[11px] text-info font-medium bg-info/8 px-2.5 py-1.5 rounded-lg border border-info/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0"
+                                     viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a3 3 0 016 0v4a3 3 0 11-6 0V7a5 5 0 0110 0v4a3 3 0 01-3 3H8a3 3 0 010-6z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                <span class="truncate">@item.Note.OriginalFileName</span>
                             </div>
                         }
 
-                        <!-- Dates -->
-                        <div class="text-[10px] opacity-40 mt-4 border-t border-base-200 pt-2">
-                            <span>Created: @item.Note.CreatedDateUtc.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</span>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            @if (item.Note.ExpiryDateUtc.HasValue)
+                            {
+                                <div
+                                    class="flex items-center gap-1.5 @(item.IsExpired ? "text-error" : isExpiringSoon ? "text-warning" : "text-success")">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0"
+                                         viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-base-content/40 font-medium">Expires</span>
+                                    <span class="font-medium">
+                                @item.Note.ExpiryDateUtc.Value.ToLocalTime().ToString("MMM dd, yyyy")
+                                        @if (!item.IsExpired && daysLeft.HasValue)
+                                        {
+                                            <span class="opacity-70">· @daysLeft days left</span>
+                                        }
+                                        else if (item.IsExpired)
+                                        {
+                                            <span class="opacity-70">· expired</span>
+                                        }
+                            </span>
+                                </div>
+                            }
+                            <div class="flex items-center gap-1.5 text-base-content/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0"
+                                     viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                    <path fill-rule="evenodd"
+                                          d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                <span class="text-base-content/40 font-medium">Viewed</span>
+                                <span>@(item.Note.Viewed ? "Yes" : "No")</span>
+                                @if (item.Note.Viewed && item.Note.DeleteAfterView)
+                                {
+                                    <span class="text-error/70">— queued for deletion</span>
+                                }
+                            </div>
                         </div>
 
-                        <!-- Actions -->
-                        <div class="card-actions justify-end mt-4 gap-1">
-                            <a asp-page="/ViewNote" asp-route-code="@item.Note.Code"
-                               class="btn btn-xs btn-outline">View</a>
-                            <a asp-page="/EditNote" asp-route-id="@item.Note.Id" class="btn btn-xs btn-ghost text-info">Edit</a>
-                            <form method="post" asp-page-handler="Delete" asp-route-id="@item.Note.Id"
-                                  asp-route-SearchQuery="@Model.SearchQuery" asp-route-P="@Model.P">
-                                <button class="btn btn-xs btn-ghost text-error"
-                                        onclick="return confirm('Permanently delete this note?')">
-                                    Delete
-                                </button>
-                            </form>
+                        <div class="border-t border-base-200 pt-2.5 mt-1 flex items-center justify-between">
+                            <span
+                                class="text-[10px] opacity-40">@item.Note.CreatedDateUtc.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</span>
+                            <div class="flex gap-1">
+                                <a asp-page="/ViewNote" asp-route-code="@item.Note.Code"
+                                   class="btn btn-xs btn-outline btn-info">View</a>
+                                <a asp-page="/EditNote" asp-route-id="@item.Note.Id"
+                                   class="btn btn-xs btn-ghost">Edit</a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@item.Note.Id"
+                                      asp-route-SearchQuery="@Model.SearchQuery" asp-route-P="@Model.P">
+                                    <button class="btn btn-xs btn-ghost text-error"
+                                            onclick="return confirm('Permanently delete this note?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             }
