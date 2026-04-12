@@ -30,6 +30,8 @@ public class EditNoteModel(
 
     [BindProperty] public IFormFile? UploadFile { get; set; }
 
+    [BindProperty] public bool IsEncrypted { get; set; } = true;
+
     public string? ExistingFileName { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int id)
@@ -70,10 +72,13 @@ public class EditNoteModel(
         if (!ModelState.IsValid)
             return Page();
 
-        // Encrypt again
-        note.Content = encryptionService.Encrypt(NoteContent);
+        string finalContent = IsEncrypted
+            ? encryptionService.Encrypt(NoteContent)
+            : NoteContent;
 
-        // Password update (optional)
+        note.Content = finalContent;
+        note.IsEncrypted = IsEncrypted;
+
         if (!string.IsNullOrWhiteSpace(Password))
         {
             note.Password = BCrypt.Net.BCrypt.HashPassword(Password);
@@ -81,7 +86,6 @@ public class EditNoteModel(
 
         note.DeleteAfterView = DeleteAfterView;
 
-        // Expiry
         DateTime? expiryDateUtc = null;
 
         switch (ExpiryOption)
@@ -101,7 +105,6 @@ public class EditNoteModel(
 
         note.ExpiryDateUtc = expiryDateUtc;
 
-        // File update
         if (UploadFile != null && UploadFile.Length > 0)
         {
             var storedFileName = $"{Guid.NewGuid()}_{UploadFile.FileName}";

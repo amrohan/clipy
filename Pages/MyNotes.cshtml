@@ -187,8 +187,10 @@
                                 class="text-[10px] opacity-40">@item.Note.CreatedDateUtc.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</span>
                             <div class="flex gap-1">
                                 <a asp-page="/ViewNote" asp-route-code="@item.Note.Code"
+                                   asp-route-returnUrl="/MyNotes"
                                    class="btn btn-xs btn-outline btn-info">View</a>
                                 <a asp-page="/EditNote" asp-route-id="@item.Note.Id"
+                                   asp-route-returnUrl="/MyNotes"
                                    class="btn btn-xs btn-ghost">Edit</a>
                                 <form method="post" asp-page-handler="Delete" asp-route-id="@item.Note.Id"
                                       asp-route-SearchQuery="@Model.SearchQuery" asp-route-P="@Model.P">
