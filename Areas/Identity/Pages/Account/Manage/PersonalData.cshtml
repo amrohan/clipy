@@ -1,0 +1,65 @@
+﻿@page
+@model PersonalDataModel
+
+@{
+    ViewData["Title"] = "Personal Data";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div>
+        <h2 class="text-lg font-semibold"> Personal Data</h2>
+        <p class="text-sm opacity-70">
+            Manage your personal data associated with your account
+        </p>
+    </div>
+
+    <!-- Card -->
+    <div class="space-y-4">
+
+        <!-- Info -->
+        <p class="text-sm">
+            Your account contains personal data that you have provided.
+            You can download or delete this data from here.
+        </p>
+
+        <!-- Danger Alert -->
+        <div class="alert alert-warning">
+                <span>
+                    ⚠️ Deleting your data will permanently remove your account. This action cannot be undone.
+                </span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+
+            <!-- Download -->
+            <form id="download-data"
+                  asp-page="DownloadPersonalData"
+                  method="post"
+                  class="w-full sm:w-auto">
+                <button type="submit"
+                        class="btn btn-primary w-full">
+                    Download Data
+                </button>
+            </form>
+
+            <!-- Delete -->
+            <a id="delete"
+               asp-page="DeletePersonalData"
+               class="btn btn-error w-full sm:w-auto"
+               onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
+                Delete Account
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

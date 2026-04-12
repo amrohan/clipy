@@ -1,0 +1,81 @@
+﻿@page
+@model ShowRecoveryCodesModel
+
+@{
+    ViewData["Title"] = "Recovery Codes";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div>
+        <h2 class="text-lg font-semibold">Recovery Codes</h2>
+        <p class="text-sm opacity-70">
+            Save these codes in a secure place. Each code can be used once.
+        </p>
+    </div>
+
+    <!-- Status -->
+    <partial name="_StatusMessage" for="StatusMessage"/>
+
+    <!-- Card -->
+    <div class="card-body space-y-4">
+
+        <!-- Warning -->
+        <div class="alert alert-warning">
+                <span>
+                    ⚠️ If you lose your device and don’t have these codes, you may lose access to your account.
+                </span>
+        </div>
+
+        <!-- Codes Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+            @foreach (var t in Model.RecoveryCodes)
+            {
+                <div class="mockup-code text-sm">
+                    <pre><code>@t</code></pre>
+                </div>
+            }
+
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+
+            <!-- Copy All -->
+            <button class="btn btn-outline w-full sm:w-auto"
+                    onclick="copyCodes()">
+                Copy All
+            </button>
+
+            <!-- Print -->
+            <button class="btn btn-outline w-full sm:w-auto"
+                    onclick="window.print()">
+                Print
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+
+    <script>
+        function copyCodes() {
+            const codes = [
+                @for (var i = 0; i < Model.RecoveryCodes.Length; i++)
+                {
+                    @: "@Model.RecoveryCodes[i]"@(i < Model.RecoveryCodes.Length - 1 ? "," : "")
+                }
+            ];
+
+            navigator.clipboard.writeText(codes.join("\n"));
+            alert("Recovery codes copied to clipboard!");
+        }
+    </script>
+}

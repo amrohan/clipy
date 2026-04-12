@@ -1,0 +1,59 @@
+﻿@page
+@model GenerateRecoveryCodesModel
+
+@{
+    ViewData["Title"] = "Generate Recovery Codes";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div>
+        <h2 class="text-lg font-semibold">Recovery Codes</h2>
+        <p class="text-sm opacity-70">
+            Generate backup codes to access your account if you lose your authenticator device
+        </p>
+    </div>
+
+    <!-- Status -->
+    <partial name="_StatusMessage" for="StatusMessage"/>
+
+    <!-- Card -->
+    <div class="space-y-4">
+
+        <!-- Warning -->
+        <div class="alert alert-warning">
+                <span>
+                    ⚠️ Store these recovery codes in a safe place. They are required if you lose access to your authenticator.
+                </span>
+        </div>
+
+        <!-- Info -->
+        <div class="text-sm opacity-80 space-y-2">
+            <p>• If you lose your device and don’t have recovery codes, you may lose access to your account.</p>
+            <p>• Generating new codes does not change your authenticator app.</p>
+            <p>
+                • To reset your authenticator,
+                <a asp-page="./ResetAuthenticator" class="link link-primary">
+                    click here
+                </a>.
+            </p>
+        </div>
+
+        <!-- Action -->
+        <form method="post" class="pt-2">
+            <button type="submit"
+                    class="btn btn-warning w-full"
+                    onclick="return confirm('Generate new recovery codes? Previous codes will no longer work.')">
+                Generate Recovery Codes
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

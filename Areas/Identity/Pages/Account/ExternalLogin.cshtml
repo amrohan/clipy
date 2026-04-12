@@ -1,0 +1,72 @@
+﻿@page
+@model ExternalLoginModel
+
+@{
+    ViewData["Title"] = "Complete Registration";
+    ViewData["HideNavbar"] = true;
+}
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-base-200 px-4">
+
+    <!-- Back Button -->
+    <partial name="_BackToHome"/>
+    <div class="w-full max-w-md">
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body space-y-4">
+
+                <!-- Header -->
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold">Complete Sign Up</h2>
+                    <p class="text-sm opacity-70">
+                        Link your <span class="font-medium">@Model.ProviderDisplayName</span> account
+                    </p>
+                </div>
+
+                <!-- Info -->
+                <div class="alert alert-info text-sm">
+                    <span>
+                        You’ve successfully signed in with 
+                        <strong>@Model.ProviderDisplayName</strong>.
+                        Please confirm your email to complete registration.
+                    </span>
+                </div>
+
+                <!-- Validation -->
+                <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+
+                <form asp-page-handler="Confirmation"
+                      asp-route-returnUrl="@Model.ReturnUrl"
+                      method="post"
+                      class="space-y-4">
+
+                    <!-- Email -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Email</span>
+                        </label>
+                        <input asp-for="Input.Email"
+                               class="input input-bordered w-full"
+                               placeholder="name@example.com"
+                               autocomplete="email"/>
+                        <span asp-validation-for="Input.Email" class="text-error text-sm"></span>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="btn btn-primary w-full">
+                        Complete Registration
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

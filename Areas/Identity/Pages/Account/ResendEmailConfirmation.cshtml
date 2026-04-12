@@ -1,0 +1,56 @@
+﻿@page
+@model ResendEmailConfirmationModel
+
+@{
+    ViewData["Title"] = "Resend Email Confirmation";
+    ViewData["HideNavbar"] = true;
+}
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-base-200 px-4">
+    <partial name="_BackToHome"/>
+    <div class="w-full max-w-md">
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+
+                <!-- Header -->
+                <h2 class="text-2xl font-bold text-center">Resend Confirmation</h2>
+                <p class="text-center text-sm opacity-70 mb-4">
+                    Enter your email to receive a new confirmation link
+                </p>
+
+                <!-- Validation -->
+                <div asp-validation-summary="All" class="text-error text-sm"></div>
+
+                <form method="post" class="space-y-4">
+
+                    <!-- Email -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Email</span>
+                        </label>
+                        <input asp-for="Input.Email"
+                               class="input input-bordered w-full"
+                               placeholder="name@example.com"
+                               autocomplete="email"/>
+                        <span asp-validation-for="Input.Email" class="text-error text-sm"></span>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="btn btn-primary w-full">
+                        Resend Email
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

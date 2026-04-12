@@ -1,0 +1,55 @@
+﻿@page
+@model LockoutModel
+
+@{
+    ViewData["Title"] = "Account Locked";
+    ViewData["HideNavbar"] = true;
+}
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-base-200 px-4">
+    <!-- Back Button -->
+    <partial name="_BackToHome"/>
+
+    <div class="w-full max-w-md">
+
+        <div class="card bg-base-100 shadow-xl border border-error">
+            <div class="card-body text-center space-y-4">
+
+                <!-- Icon -->
+                <div class="text-4xl">🚫</div>
+
+                <!-- Title -->
+                <h2 class="text-2xl font-bold text-error">
+                    Account Locked
+                </h2>
+
+                <!-- Message -->
+                <div class="alert alert-error">
+                    <span>
+                        Your account has been temporarily locked due to multiple failed login attempts.
+                    </span>
+                </div>
+
+                <p class="text-sm opacity-70">
+                    Please try again later or reset your password if you’ve forgotten it.
+                </p>
+
+                <!-- Actions -->
+                <div class="flex flex-col gap-2 pt-2">
+
+                    <a asp-page="./Login" class="btn btn-primary w-full">
+                        Go to Login
+                    </a>
+
+                    <a asp-page="./ForgotPassword" class="btn btn-outline w-full">
+                        Reset Password
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

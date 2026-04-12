@@ -1,0 +1,116 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+    ViewData["HideNavbar"] = true;
+}
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-base-200 px-4">
+    <partial name="_BackToHome"/>
+    <div class="w-full max-w-md">
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+
+                <h2 class="text-2xl font-bold text-center">Create Account </h2>
+                <p class="text-center text-sm opacity-70 mb-4">
+                    Sign up to get started
+                </p>
+
+                <!-- Validation -->
+                <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+
+                <form id="registerForm"
+                      asp-route-returnUrl="@Model.ReturnUrl"
+                      method="post"
+                      class="space-y-4">
+
+                    <!-- Email -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Email</span>
+                        </label>
+                        <input asp-for="Input.Email"
+                               class="input input-bordered w-full"
+                               placeholder="name@example.com"
+                               autocomplete="username"/>
+                        <span asp-validation-for="Input.Email" class="text-error text-sm"></span>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Password</span>
+                        </label>
+                        <input asp-for="Input.Password"
+                               type="password"
+                               class="input input-bordered w-full"
+                               placeholder="••••••••"
+                               autocomplete="new-password"/>
+                        <span asp-validation-for="Input.Password" class="text-error text-sm"></span>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Confirm Password</span>
+                        </label>
+                        <input asp-for="Input.ConfirmPassword"
+                               type="password"
+                               class="input input-bordered w-full"
+                               placeholder="••••••••"
+                               autocomplete="new-password"/>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-error text-sm"></span>
+                    </div>
+
+                    <!-- Submit -->
+                    <button id="registerSubmit"
+                            type="submit"
+                            class="btn btn-primary w-full">
+                        Register
+                    </button>
+
+                    <!-- Login Redirect -->
+                    <div class="text-sm text-center mt-3">
+                        <span class="opacity-70">Already have an account?</span>
+                        <a asp-page="./Login"
+                           asp-route-returnUrl="@Model.ReturnUrl"
+                           class="link link-primary ml-1">
+                            Login
+                        </a>
+                    </div>
+
+                </form>
+
+                <!-- External Register -->
+                @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                {
+                    <div class="divider">OR</div>
+
+                    <form asp-page="./ExternalLogin"
+                          asp-route-returnUrl="@Model.ReturnUrl"
+                          method="post"
+                          class="space-y-2">
+
+                        @foreach (var provider in Model.ExternalLogins!)
+                        {
+                            <button type="submit"
+                                    name="provider"
+                                    value="@provider.Name"
+                                    class="btn btn-outline w-full">
+                                Continue with @provider.DisplayName
+                            </button>
+                        }
+                    </form>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

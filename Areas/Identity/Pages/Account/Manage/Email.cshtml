@@ -1,0 +1,82 @@
+﻿@page
+@model EmailModel
+
+@{
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div>
+        <h2 class="text-lg font-bold"> Manage Email</h2>
+        <p class="text-sm opacity-70">Update or verify your email address</p>
+    </div>
+
+    <!-- Status Message -->
+    <partial name="_StatusMessage" for="StatusMessage"/>
+
+    <form id="email-form" method="post" class="space-y-4">
+
+        <!-- Validation -->
+        <div asp-validation-summary="All" class="text-error text-sm"></div>
+
+        <!-- Current Email -->
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text">Current Email</span>
+            </label>
+
+            <div class="flex gap-2">
+                <input asp-for="Email"
+                       class="input input-bordered w-full opacity-70 cursor-not-allowed"
+                       disabled/>
+
+                @if (Model.IsEmailConfirmed)
+                {
+                    <div class="badge badge-success gap-1">
+                        ✓ Verified
+                    </div>
+                }
+            </div>
+
+            @if (!Model.IsEmailConfirmed)
+            {
+                <button type="submit"
+                        asp-page-handler="SendVerificationEmail"
+                        class="btn btn-link text-xs mt-1 w-fit">
+                    Send verification email
+                </button>
+            }
+        </div>
+
+        <!-- New Email -->
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text">New Email</span>
+            </label>
+            <input asp-for="Input.NewEmail"
+                   class="input input-bordered w-full"
+                   placeholder="Enter new email"
+                   autocomplete="email"/>
+            <span asp-validation-for="Input.NewEmail" class="text-error text-sm"></span>
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-2">
+            <button id="change-email-button"
+                    type="submit"
+                    asp-page-handler="ChangeEmail"
+                    class="btn btn-primary w-full">
+                Change Email
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

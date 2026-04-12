@@ -1,6 +1,7 @@
 using clipy.Hubs;
 using clipy.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,13 +11,15 @@ builder.Services.AddSignalR();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=clipy.db"));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
+    .AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddSingleton<IRoomManager, RoomManager>();
 builder.Services.AddSingleton<IRoomCleanupService, RoomCleanupService>();
 builder.Services.AddHostedService(p =>
     (RoomCleanupService)p.GetRequiredService<IRoomCleanupService>());
 builder.Services.AddSingleton<IFileStorageService, B2StorageService>();
-
 
 var app = builder.Build();
 
@@ -32,11 +35,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// app.UseHttpsRedirection(); 
+// app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseRouting();
-app.MapRazorPages().WithStaticAssets();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapRazorPages();
 app.MapHub<RoomHub>("/roomHub");
 
 app.Run();

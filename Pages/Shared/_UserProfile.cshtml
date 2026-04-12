@@ -1,0 +1,67 @@
+@if (User.Identity?.IsAuthenticated ?? false)
+{
+    <div class="dropdown dropdown-end">
+
+        <!-- Avatar trigger -->
+        <div tabindex="0" role="button" class="avatar avatar-placeholder cursor-pointer">
+            <div class="bg-primary text-primary-content w-12 rounded-full flex items-center justify-center">
+                <span class="text-sm font-semibold">
+                    @{
+                        var name = User.Identity?.Name ?? "";
+                        var initials = name.Length >= 2 ? name[..2].ToUpper() : name.ToUpper();
+                    }
+                    @initials
+                </span>
+            </div>
+        </div>
+
+        <!-- Dropdown menu -->
+        <ul tabindex="0"
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+
+            <!-- User email -->
+            <li class="px-2 py-4 mb-4 border-b border-gray-300 text-xs opacity-70 break-all">
+                @User.Identity?.Name
+            </li>
+
+            <!-- Profile -->
+            <li>
+                <a href="/Identity/Account/Manage">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="size-4">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Profile
+                </a>
+            </li>
+
+            <!-- Logout -->
+            <li>
+                <form method="post"
+                      asp-area="Identity"
+                      asp-page="/Account/Logout"
+                      asp-route-returnUrl="/">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="w-full flex justify-start items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="size-4">
+                            <path d="m16 17 5-5-5-5"/>
+                            <path d="M21 12H9"/>
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        </svg>
+                        Logout
+                    </button>
+                </form>
+            </li>
+
+        </ul>
+    </div>
+}
+else
+{
+    <a href="/Identity/Account/Login" class="btn btn-ghost">Login</a>
+    <a href="/Identity/Account/Register" class="btn btn-primary">Register</a>
+}

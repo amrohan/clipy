@@ -1,0 +1,105 @@
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<div class="menu gap bg-base-100 rounded-box w-full p-2 shadow">
+
+    <li>
+        <a class="menu-item  flex gap-2 items-center @ManageNavPages.IndexNavClass(ViewContext)"
+           id="profile"
+           asp-page="./Index">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="size-4">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Profile
+        </a>
+    </li>
+
+    <li>
+        <a class="menu-item flex gap-2 items-center @ManageNavPages.EmailNavClass(ViewContext)"
+           id="email"
+           asp-page="./Email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="size-4">
+                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+            </svg>
+            Email
+        </a>
+    </li>
+
+    <li>
+        <a class="menu-item flex gap-2 items-center @ManageNavPages.ChangePasswordNavClass(ViewContext)"
+           id="change-password"
+           asp-page="./ChangePassword">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="size-4">
+                <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/>
+                <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/>
+                <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/>
+                <path d="M2 12a10 10 0 0 1 18-6"/>
+                <path d="M2 16h.01"/>
+                <path d="M21.8 16c.2-2 .131-5.354 0-6"/>
+                <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/>
+                <path d="M8.65 22c.21-.66.45-1.32.57-2"/>
+                <path d="M9 6.8a6 6 0 0 1 9 5.2v2"/>
+            </svg>
+            Password
+        </a>
+    </li>
+
+
+    <li>
+        @if (hasExternalLogins)
+        {
+            <a class="menu-item flex gap-2 items-center @ManageNavPages.ExternalLoginsNavClass(ViewContext)"
+               id="external-login"
+               asp-page="./ExternalLogins">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="size-4">
+                    <path
+                        d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>
+                    <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
+                </svg>
+                External Logins
+            </a>
+        }
+    </li>
+
+    <li>
+        <a class="menu-item flex gap-2 items-center @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"
+           id="two-factor"
+           asp-page="./TwoFactorAuthentication">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="size-4">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Two-Factor Auth
+        </a>
+    </li>
+
+    <li>
+        <a class="menu-item flex gap-2 items-center @ManageNavPages.PersonalDataNavClass(ViewContext)"
+           id="personal-data"
+           asp-page="./PersonalData">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="size-4">
+                <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                <path d="M3 5V19A9 3 0 0 0 21 19V5"/>
+                <path d="M3 12A9 3 0 0 0 21 12"/>
+            </svg>
+            Personal Data
+        </a>
+    </li>
+
+</div>

@@ -1,0 +1,56 @@
+﻿@page
+@model RegisterConfirmationModel
+
+@{
+    ViewData["Title"] = "Register Confirmation";
+    ViewData["HideNavbar"] = true;
+}
+
+<div class="min-h-screen flex flex-col items-center justify-center bg-base-200 px-4">
+
+    <partial name="_BackToHome"/>
+    <div class="w-full max-w-md">
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body text-center space-y-4">
+
+                <!-- Title -->
+                <h2 class="text-2xl font-bold"> Confirm Your Account</h2>
+
+                @if (Model.DisplayConfirmAccountLink)
+                {
+                    <!-- Dev Mode Info -->
+                    <div class="alert alert-info text-left">
+                        <span>
+                            No email sender configured. Use the link below to confirm your account.
+                        </span>
+                    </div>
+
+                    <!-- Confirm Link -->
+                    <a id="confirm-link"
+                       href="@Model.EmailConfirmationUrl"
+                       class="btn btn-primary w-full">
+                        Confirm Account
+                    </a>
+                }
+                else
+                {
+                    <!-- Normal Flow -->
+                    <div class="alert alert-success">
+                        <span>
+                            ✅ A confirmation email has been sent. Please check your inbox.
+                        </span>
+                    </div>
+                }
+
+                <!-- Help Text -->
+                <p class="text-sm opacity-70">
+                    Didn’t receive the email? Check your spam folder or try again.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

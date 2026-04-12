@@ -1,0 +1,100 @@
+﻿@page
+@model EnableAuthenticatorModel
+
+@{
+    ViewData["Title"] = "Configure Authenticator";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div>
+        <h2 class="text-lg font-semibold"> Two-Factor Authentication</h2>
+        <p class="text-sm opacity-70">Secure your account using an authenticator app</p>
+    </div>
+
+    <!-- Status -->
+    <partial name="_StatusMessage" for="StatusMessage"/>
+
+    <!-- Steps -->
+    <ul class="steps steps-vertical">
+
+        <!-- Step 1 -->
+        <li class="step step-primary">
+            <div>
+                <p class="font-medium">Install an authenticator app</p>
+                <p class="text-sm opacity-70">
+                    Download:
+                    <a class="link link-primary"
+                       href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> /
+                    <a class="link link-primary" href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a>
+                    (Microsoft Authenticator) or
+                    <a class="link link-primary"
+                       href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Google
+                        Authenticator</a>
+                </p>
+            </div>
+        </li>
+
+        <!-- Step 2 -->
+        <li class="step step-primary">
+            <div class="space-y-3">
+                <p class="font-medium">Scan QR Code or enter key</p>
+
+                <!-- Key -->
+                <div class="mockup-code text-sm">
+                    <pre><code>@Model.SharedKey</code></pre>
+                </div>
+
+                <!-- Info -->
+                <div class="alert alert-info text-sm">
+                            <span>
+                                Can't scan? Enter the key manually.
+                            </span>
+                </div>
+
+                <!-- QR -->
+                <div id="qrCode" class="flex justify-center"></div>
+                <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+            </div>
+        </li>
+
+        <!-- Step 3 -->
+        <li class="step step-primary">
+            <div class="space-y-4">
+
+                <p class="font-medium">Enter verification code</p>
+
+                <form id="send-code" method="post" class="space-y-4">
+
+                    <!-- Input -->
+                    <div class="form-control">
+                        <input asp-for="Input.Code"
+                               class="input input-bordered w-full text-center tracking-widest"
+                               placeholder="Enter 6-digit code"
+                               autocomplete="off"/>
+                        <span asp-validation-for="Input.Code" class="text-error text-sm"></span>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="btn btn-primary w-full">
+                        Verify & Enable
+                    </button>
+
+                    <!-- Validation -->
+                    <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+
+                </form>
+
+            </div>
+        </li>
+
+    </ul>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}
