@@ -1,14 +1,21 @@
 using System.ComponentModel.DataAnnotations;
 using clipy.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace clipy.Pages;
 
-public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService, IFileStorageService storage)
+public class AddNoteModel(
+    AppDbContext db,
+    IEncryptionService encryptionService,
+    IFileStorageService storage,
+    UserManager<IdentityUser> userManager)
     : PageModel
 {
+    private readonly UserManager<IdentityUser> _userManager = userManager;
+
     [BindProperty, Required(ErrorMessage = "Note content is required.")]
     public string NoteContent { get; set; } = string.Empty;
 
@@ -97,6 +104,8 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
 
         string encryptedContent = encryptionService.Encrypt(NoteContent);
 
+        var userId = _userManager.GetUserId(User);
+
         var note = new Note
         {
             Content = encryptedContent,
@@ -106,7 +115,8 @@ public class AddNoteModel(AppDbContext db, IEncryptionService encryptionService,
             ExpiryDateUtc = expiryDateUtc,
             IsEncrypted = true,
             FileName = storedFileName,
-            OriginalFileName = originalFileName
+            OriginalFileName = originalFileName,
+            UserId = userId
         };
 
         db.Notes.Add(note);
