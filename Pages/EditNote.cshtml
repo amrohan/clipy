@@ -1,0 +1,165 @@
+@page "{id:int}"
+@model EditNoteModel
+
+@{
+    ViewData["Title"] = "Edit Note";
+}
+
+<div class="max-w-5xl mx-auto p-4">
+
+    <div class="card bg-base-100 border border-base-300">
+        <div class="card-body">
+
+            <h2 class="card-title"> Edit Note</h2>
+
+            <form method="post" enctype="multipart/form-data" id="noteForm" class="space-y-4">
+
+                <input type="hidden" asp-for="Id"/>
+
+                <!-- Editor -->
+                <fieldset class="fieldset">
+                    <legend class="fieldset-legend">Note Content</legend>
+
+                    <div id="editor" class="min-h-[350px]"></div>
+
+                    <!-- IMPORTANT: hidden textarea -->
+                    <textarea id="NoteContent" name="NoteContent"
+                              class="absolute opacity-0 pointer-events-none h-0 w-0">
+                        @Model.NoteContent
+                    </textarea>
+
+                    <span asp-validation-for="NoteContent" class="text-error text-sm"></span>
+                </fieldset>
+
+                <!-- File -->
+                <fieldset class="fieldset">
+                    <legend class="fieldset-legend">Replace File</legend>
+
+                    @if (Model.ExistingFileName != null)
+                    {
+                        <div class="text-sm opacity-70 mb-2">
+                            📎 Current: @Model.ExistingFileName
+                        </div>
+                    }
+
+                    <input type="file" asp-for="UploadFile"
+                           class="file-input file-input-bordered w-full"/>
+                </fieldset>
+
+                <!-- Advanced -->
+                <div class="collapse collapse-arrow border border-base-300">
+                    <input type="checkbox"/>
+
+                    <div class="collapse-title font-medium">
+                        Advanced Options
+                    </div>
+
+                    <div class="collapse-content space-y-4">
+
+                        <!-- Password -->
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">New Password</legend>
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="input input-bordered w-full"
+                                   placeholder="Leave empty to keep existing"/>
+                        </fieldset>
+
+                        <!-- Expiry -->
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">Expiry</legend>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <select asp-for="ExpiryOption"
+                                        id="ExpiryOption"
+                                        class="select select-bordered w-full">
+                                    <option value="never">Never</option>
+                                    <option value="1h">1 Hour</option>
+                                    <option value="24h">24 Hours</option>
+                                    <option value="7d">7 Days</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+
+                                <input asp-for="CustomExpiryDate"
+                                       id="CustomExpiryDate"
+                                       type="date"
+                                       class="input input-bordered w-full"/>
+                            </div>
+                        </fieldset>
+
+                        <!-- Delete after view -->
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <span class="label-text">Delete after first view</span>
+                            <input asp-for="DeleteAfterView"
+                                   type="checkbox"
+                                   class="toggle toggle-primary"/>
+                        </label>
+
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button id="submitBtn" class="btn btn-primary w-full">
+                    <span id="loadingSpinner" class="loading loading-dots hidden"></span>
+                    <span id="btnText">Update Note</span>
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const hiddenTextarea = document.getElementById("NoteContent");
+            let editorInstance = null;
+
+            if (document.getElementById("editor")) {
+                const [editor] = new OverType("#editor", {
+                    toolbar: true,
+                    value: hiddenTextarea.value.trim() || ""
+                });
+                editorInstance = editor;
+            }
+
+            const form = document.getElementById("noteForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const spinner = document.getElementById("loadingSpinner");
+            const btnText = document.getElementById("btnText");
+
+            if (form) {
+                form.addEventListener("submit", (e) => {
+
+                    const content = editorInstance ? editorInstance.getValue() : "";
+                    hiddenTextarea.value = content;
+
+                    if (!content.trim()) {
+                        e.preventDefault();
+                        alert("Note content cannot be empty");
+                        return;
+                    }
+
+                    spinner.classList.remove("hidden");
+                    btnText.classList.add("hidden");
+                    submitBtn.disabled = true;
+                });
+            }
+
+            const expirySelect = document.getElementById("ExpiryOption");
+            const customDateInput = document.getElementById("CustomExpiryDate");
+
+            if (expirySelect) {
+                expirySelect.addEventListener("change", () => {
+                    const isCustom = expirySelect.value === "custom";
+                    customDateInput.classList.toggle("hidden", !isCustom);
+                    customDateInput.required = isCustom;
+                });
+            }
+
+        });
+    </script>
+}

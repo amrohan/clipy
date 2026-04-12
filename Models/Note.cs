@@ -1,6 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
+
+[Index(nameof(UserId))]
+[Index(nameof(Code), IsUnique = true)]
 public class Note
 {
     public int Id { get; set; }

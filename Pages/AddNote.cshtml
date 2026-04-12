@@ -34,6 +34,13 @@
                     <div class="mockup-code">
                         <pre><code id="noteContent">@Model.NoteUrl.Trim()</code></pre>
                     </div>
+                    <div class="h-20 flex items-center justify-end">
+                        <a asp-page="/AddNote">
+                            <button class="btn btn-sm btn-primary">
+                                Create new note
+                            </button>
+                        </a>
+                    </div>
 
                 </div>
 
@@ -74,16 +81,30 @@
                         <span asp-validation-for="NoteContent" class="text-error text-sm"></span>
                     </fieldset>
 
-                    <fieldset class="fieldset">
-                        <legend class="fieldset-legend">Attach File</legend>
-                        <input id="file-input" type="file" asp-for="UploadFile"
-                               class="file-input file-input-bordered w-full"/>
-                        <label class="label">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">Attach File</legend>
+                            <input id="file-input" type="file" asp-for="UploadFile"
+                                   class="file-input file-input-bordered w-full"/>
+                            <label class="label">
                                 <span class="label-text-alt">
                                     File automatically expires after 7 days
                                 </span>
-                        </label>
-                    </fieldset>
+                            </label>
+                        </fieldset>
+                        <fieldset class="fieldset">
+                            <legend class="fieldset-legend">Encrypt Note</legend>
+                            <div class="form-control">
+                                <label class="label cursor-pointer justify-start gap-4">
+                                    <input type="checkbox" asp-for="IsEncrypted" class="checkbox checkbox-primary"
+                                           checked/>
+                                    <span
+                                        class="label-text font-bold">Encrypt Note Content (Secure but not searchable)</span>
+                                </label>
+                            </div>
+
+                        </fieldset>
+                    </div>
 
                     <div class="collapse collapse-arrow border border-base-300 bg-base-100">
                         <input type="checkbox"/>
@@ -105,7 +126,6 @@
                                            placeholder="Optional password">
                                 </fieldset>
                             </div>
-
                             <fieldset class="fieldset">
                                 <legend class="fieldset-legend">Auto Delete</legend>
                                 <div class="grid md:grid-cols-2 gap-4">

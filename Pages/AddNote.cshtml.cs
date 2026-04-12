@@ -33,6 +33,8 @@ public class AddNoteModel(
 
     [BindProperty] public IFormFile? UploadFile { get; set; }
 
+    [BindProperty] public bool IsEncrypted { get; set; } = true;
+
     public string? NoteUrl { get; set; }
     public string? ErrorMessage { get; set; }
 
@@ -102,21 +104,24 @@ public class AddNoteModel(
                 break;
         }
 
-        string encryptedContent = encryptionService.Encrypt(NoteContent);
+
+        string finalContent = IsEncrypted
+            ? encryptionService.Encrypt(NoteContent)
+            : NoteContent;
 
         var userId = _userManager.GetUserId(User);
 
         var note = new Note
         {
-            Content = encryptedContent,
+            Content = finalContent,
             Code = code,
             Password = hashedPassword,
             DeleteAfterView = DeleteAfterView,
             ExpiryDateUtc = expiryDateUtc,
-            IsEncrypted = true,
+            IsEncrypted = IsEncrypted,
             FileName = storedFileName,
             OriginalFileName = originalFileName,
-            UserId = userId
+            UserId = userId,
         };
 
         db.Notes.Add(note);
