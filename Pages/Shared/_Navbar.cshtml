@@ -6,53 +6,122 @@
 
 <header class="sticky top-2 z-[999] bg-base-100/70 backdrop-blur  rounded-lg">
     <div class="navbar max-w-6xl mx-none md:mx-auto">
-        <div class="flex w-full justify-between items-center">
-            @if (path != "/" && path != "/MyNotes")
-            {
-                <partial name="_BackToHome"/>
-            }
-            <!-- Mobile Menu -->
+        <div class="navbar bg-base-100 px-0 min-h-fit">
 
-            <div class="navbar-end w-full lg:hidden">
-                <partial name="_UserProfile"/>
-                <div class="dropdown">
+            <!-- Left Side: Back Button -->
+            <div class="navbar-start">
+                @if (path != "/Index" && path != "/MyNotes" && path != "/")
+                {
+                    <div class="transition-all hover:-translate-x-1">
+                        <partial name="_BackToHome"/>
+                    </div>
+                }
+            </div>
+
+            <!-- Right Side: Mobile Menu & Profile -->
+            <div class="navbar-end gap-2 lg:hidden">
+
+                <div class="dropdown dropdown-end">
+                    <!-- Hamburger Icon -->
                     <label tabindex="0" class="btn btn-ghost btn-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M4 6h16M4 12h16M4 18h16"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h8m-8 6h16"/>
                         </svg>
                     </label>
 
+                    <!-- Dropdown Content -->
                     <ul tabindex="0"
-                        class="menu menu-sm dropdown-content mt-2 right-4 z-10 p-2 shadow-lg bg-base-100 border border-base-200 rounded-box w-52">
+                        class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow-2xl bg-base-100 border border-base-200 rounded-2xl w-64">
 
-                        @if (@User.Identity is { IsAuthenticated: true })
+                        <li class="menu-title opacity-50 text-xs">Navigation</li>
+
+                        @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="p-1.5">
-                                <a asp-page="/MyNotes">My Notes</a>
+                            <li>
+                                <a asp-page="/MyNotes" class="py-3 gap-3">
+                                    My Notes
+                                </a>
                             </li>
                         }
                         else
                         {
-                            <li class="p-1.5">
-                                <a asp-page="/AddNote">Create Note</a>
+                            <li>
+                                <a asp-page="/AddNote" class="py-3 gap-3">
+                                    Create Note
+                                </a>
                             </li>
                         }
-                        <li class="p-1.5">
-                            <a asp-page="/ViewNote">View Note</a>
+
+                        <li>
+                            <a asp-page="/ViewNote" class="py-3 gap-3">
+                                View Note
+                            </a>
                         </li>
 
-                        <li class="p-1.5">
-                            <a asp-page="/Room">Start Room</a>
+                        <li>
+                            <a asp-page="/Room" class="py-3 gap-3 text-secondary font-semibold">
+                                Start Room
+                            </a>
                         </li>
-
                     </ul>
                 </div>
+
+                <!-- Profile Partial -->
+                <div class="border-l border-base-300 pl-2">
+                    <partial name="_UserProfile"/>
+                </div>
+
             </div>
         </div>
-
+        @* <div class="flex w-full justify-start items-center"> *@
+        @*     @if (path != "/" && path != "/MyNotes") *@
+        @*     { *@
+        @*         <partial name="_BackToHome"/> *@
+        @*     } *@
+        @*     <!-- Mobile Menu --> *@
+        @* *@
+        @*     <div class="flex justify-between w-full lg:hidden"> *@
+        @*         <div class="dropdown"> *@
+        @*             <label tabindex="0" class="btn btn-ghost btn-circle"> *@
+        @*                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" *@
+        @*                      viewBox="0 0 24 24" stroke="currentColor"> *@
+        @*                     <path stroke-linecap="round" stroke-linejoin="round" *@
+        @*                           stroke-width="2" *@
+        @*                           d="M4 6h16M4 12h16M4 18h16"/> *@
+        @*                 </svg> *@
+        @*             </label> *@
+        @* *@
+        @*             <ul tabindex="0" *@
+        @*                 class="menu menu-sm dropdown-content mt-2 right-4 z-10 p-2 shadow-lg bg-base-100 border border-base-200 rounded-box w-52"> *@
+        @* *@
+        @*                 @if (@User.Identity is { IsAuthenticated: true }) *@
+        @*                 { *@
+        @*                     <li class="p-1.5"> *@
+        @*                         <a asp-page="/MyNotes">My Notes</a> *@
+        @*                     </li> *@
+        @*                 } *@
+        @*                 else *@
+        @*                 { *@
+        @*                     <li class="p-1.5"> *@
+        @*                         <a asp-page="/AddNote">Create Note</a> *@
+        @*                     </li> *@
+        @*                 } *@
+        @*                 <li class="p-1.5"> *@
+        @*                     <a asp-page="/ViewNote">View Note</a> *@
+        @*                 </li> *@
+        @* *@
+        @*                 <li class="p-1.5"> *@
+        @*                     <a asp-page="/Room">Start Room</a> *@
+        @*                 </li> *@
+        @* *@
+        @*             </ul> *@
+        @*         </div> *@
+        @*         <partial name="_UserProfile"/> *@
+        @*     </div> *@
+        @* </div> *@
+        @* *@
         <!-- Desktop Menu -->
         <div class="navbar-end hidden lg:flex w-full">
             <ul class="flex justify-end items-center gap-4 ">
