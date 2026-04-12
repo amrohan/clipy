@@ -7,42 +7,68 @@
 <div class="max-w-6xl mx-auto p-4 space-y-6">
 
     <!-- Header & Search -->
-    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <div>
-            <h2 class="text-lg font-bold flex items-center gap-2">
-                My Secure Notes
-            </h2>
-            <p class="text-xs opacity-50">Content search is disabled for encrypted notes.</p>
+    <div class="flex flex-col gap-6">
+        <!-- Header Row: Title & New Note Button -->
+        <div class="flex flex-row justify-between items-center gap-4">
+            <div>
+                <h2 class="text-xl md:text-2xl font-bold tracking-tight flex items-center gap-2">
+                    My Secure Notes
+                </h2>
+                <p class="text-[10px] md:text-xs opacity-50 leading-tight">
+                    Content search is disabled for encrypted notes.
+                </p>
+            </div>
+
+            <!-- New Note Button (Desktop & Mobile) -->
+            <a asp-page="/AddNote" class="btn btn-primary btn-sm shadow-md gap-2 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                    <path d="M5 12h14m-7-7v14"/>
+                </svg>
+                <span class="hidden xs:inline">New Note</span>
+                <span class="xs:hidden">Note</span>
+            </a>
         </div>
 
-        <div class="flex flex-wrap gap-2">
-            <form method="get" class="flex gap-2">
-                @* Search icon *@
-
-                <div class="join">
-                    <label class="input join-item input-sm">
-                        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g
-                                stroke-linejoin="round"
-                                stroke-linecap="round"
-                                stroke-width="2.5"
-                                fill="none"
-                                stroke="currentColor">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.3-4.3"></path>
-                            </g>
+        <!-- Search Row -->
+        <div class="w-full flex justify-start md:justify-end">
+            <form method="get" class="w-full md:w-auto">
+                <div class="join w-full shadow-sm border border-base-300 rounded-lg overflow-hidden">
+                    <!-- Input Group -->
+                    <div class="flex items-center bg-base-100 px-3 flex-1">
+                        <svg class="h-4 w-4 opacity-40 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
                         </svg>
-                        <input type="text" name="SearchQuery" value="@Model.SearchQuery"
-                               placeholder="Search metadata or text..." class="w-full md:w-60"/>
-                    </label>
-                    @if (!string.IsNullOrEmpty(Model.SearchQuery))
-                    {
-                        <a asp-page="./MyNotes" class="btn btn-sm text-xs">Clear</a>
-                    }
-                    <button type="submit" class="btn btn-sm join-item btn-primary">Search</button>
+                        <input type="text"
+                               name="SearchQuery"
+                               value="@Model.SearchQuery"
+                               placeholder="Search code or files..."
+                               class="input input-sm border-none focus:outline-none focus:ring-0 w-full md:w-64 text-sm"/>
+
+                        @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                        {
+                            <a asp-page="./MyNotes"
+                               class="btn btn-ghost btn-xs btn-circle tooltip tooltip-left grid place-content-center"
+                               data-tip="Clear search">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="size-4">
+                                    <path d="M18 6 6 18"/>
+                                    <path d="m6 6 12 12"/>
+                                </svg>
+                            </a>
+                        }
+                    </div>
+
+                    <!-- Search Button -->
+                    <button type="submit" class="btn btn-sm join-item btn-primary border-none px-4">
+                        Search
+                    </button>
                 </div>
             </form>
-            <a asp-page="/AddNote" class="btn btn-primary btn-sm shadow-md">+ New Note</a>
         </div>
     </div>
 
