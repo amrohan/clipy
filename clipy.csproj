@@ -42,6 +42,7 @@
     <_ContentIncludedByDefault Remove="output\output\libman.json" />
     <_ContentIncludedByDefault Remove="output\output\output\appsettings.Development.json" />
     <_ContentIncludedByDefault Remove="output\output\output\appsettings.json" />
+    <_ContentIncludedByDefault Remove="output\appsettings.example.json" />
   </ItemGroup>
 
 </Project>
