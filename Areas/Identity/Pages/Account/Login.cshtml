@@ -49,8 +49,8 @@
                     </div>
 
                     <!-- Remember Me -->
-                    <div class="form-control">
-                        <label class="label cursor-pointer justify-start gap-2">
+                    <div class="form-control flex justify-between w-full">
+                        <label class="label cursor-pointer justify-start gap-2 w-full">
                             <input type="checkbox"
                                    class="checkbox checkbox-primary"
                                    asp-for="Input.RememberMe"/>
@@ -58,6 +58,11 @@
                                 @Html.DisplayNameFor(m => m.Input.RememberMe)
                             </span>
                         </label>
+                        <p class="w-full text-end">
+                            <a asp-page="./ForgotPassword" class="link link-hover">
+                                Forgot password?
+                            </a>
+                        </p>
                     </div>
 
                     <!-- Submit -->
@@ -68,20 +73,15 @@
                     <!-- Links -->
                     <div class="text-sm text-center space-y-1 mt-3">
                         <p>
-                            <a asp-page="./ForgotPassword" class="link link-hover">
-                                Forgot password?
-                            </a>
-                        </p>
-                        <p>
                             <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="link link-primary">
                                 Create an account
                             </a>
                         </p>
-                        <p>
-                            <a asp-page="./ResendEmailConfirmation" class="link link-hover">
-                                Resend confirmation email
-                            </a>
-                        </p>
+                        @* <p> *@
+                        @*     <a asp-page="./ResendEmailConfirmation" class="link link-hover"> *@
+                        @*         Resend confirmation email *@
+                        @*     </a> *@
+                        @* </p> *@
                     </div>
 
                 </form>

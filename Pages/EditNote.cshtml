@@ -126,6 +126,36 @@
 
 </div>
 
+
+<style>
+    .overtype-toolbar {
+        display: flex;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 4px;
+    }
+
+    .overtype-toolbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    @@media (max-width: 640px) {
+        .overtype-toolbar {
+            flex-wrap: wrap;
+        }
+
+        .overtype-toolbar-button {
+            padding: 4px 6px;
+            font-size: 12px;
+            min-height: 28px;
+        }
+
+        .overtype-toolbar button {
+            flex: 0 0 calc(12% - 8px);
+        }
+    }
+</style>
+
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -178,3 +208,4 @@
         });
     </script>
 }
+
