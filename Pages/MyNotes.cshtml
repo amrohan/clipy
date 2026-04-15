@@ -92,7 +92,6 @@
                 var daysLeft = item.Note.ExpiryDateUtc.HasValue
                     ? (int)(item.Note.ExpiryDateUtc.Value - DateTime.UtcNow).TotalDays
                     : (int?)null;
-
                 <div
                     class="card bg-base-100 border @(item.IsExpired ? "border-error/40 opacity-80" : "border-base-300") hover:-translate-y-0.5 transition-all duration-150">
                     <div class="card-body p-5 gap-3">
@@ -147,24 +146,25 @@
                         </div>
 
                         <div class="bg-base-200/60 rounded-lg p-3 min-h-[80px] border border-base-200">
-                            <p class="text-sm line-clamp-3 italic opacity-75 break-words leading-relaxed">
+                            <p class="text-sm line-clamp-2 italic opacity-75 break-words leading-relaxed">
                                 @item.DecryptedContent
                             </p>
                         </div>
 
-                        @if (!string.IsNullOrEmpty(item.Note.OriginalFileName))
-                        {
-                            <div
-                                class="flex items-center gap-2 text-[11px] text-info font-medium bg-info/8 px-2.5 py-1.5 rounded-lg border border-info/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0"
-                                     viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a3 3 0 016 0v4a3 3 0 11-6 0V7a5 5 0 0110 0v4a3 3 0 01-3 3H8a3 3 0 010-6z"
-                                          clip-rule="evenodd"/>
-                                </svg>
-                                <span class="truncate">@item.Note.OriginalFileName</span>
-                            </div>
-                        }
+                        @* @if (!string.IsNullOrEmpty(item.Note.OriginalFileName)) *@
+                        @* { *@
+                        @*     <a *@
+                        @*         asp-page="/Download" asp-route-code="@item.Note.Code" *@
+                        @*         class="flex items-center gap-2 text-[11px]  font-medium bg-gray-400/8 px-2.5 py-1.5 rounded-lg border border-gray-400/20"> *@
+                        @*         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" *@
+                        @*              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" *@
+                        @*              stroke-linejoin="round" class="size-4"> *@
+                        @*             <path *@
+                        @*                 d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/> *@
+                        @*         </svg> *@
+                        @*         <span class="truncate">@item.Note.OriginalFileName</span> *@
+                        @*     </a> *@
+                        @* } *@
 
                         <div class="flex flex-col gap-1.5 text-[11px]">
                             @if (item.Note.ExpiryDateUtc.HasValue)
@@ -192,15 +192,15 @@
                                 </div>
                             }
                             <div class="flex items-center gap-1.5 text-base-content/50">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0"
-                                     viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                    <path fill-rule="evenodd"
-                                          d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                          clip-rule="evenodd"/>
-                                </svg>
-                                <span class="text-base-content/40 font-medium">Viewed</span>
-                                <span>@(item.Note.Viewed ? "Yes" : "No")</span>
+                                @* <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0" *@
+                                @*      viewBox="0 0 20 20" fill="currentColor"> *@
+                                @*     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/> *@
+                                @*     <path fill-rule="evenodd" *@
+                                @*           d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" *@
+                                @*           clip-rule="evenodd"/> *@
+                                @* </svg> *@
+                                @* <span class="text-base-content/40 font-medium">Viewed</span> *@
+                                @* <span>@(item.Note.Viewed ? "Yes" : "No")</span> *@
                                 @if (item.Note.Viewed && item.Note.DeleteAfterView)
                                 {
                                     <span class="text-error/70">— queued for deletion</span>
@@ -211,18 +211,62 @@
                         <div class="border-t border-base-200 pt-2.5 mt-1 flex items-center justify-between">
                             <span
                                 class="text-[10px] opacity-40">@item.Note.CreatedDateUtc.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</span>
-                            <div class="flex gap-1">
+                            <div class="flex gap-4 md:gap-2">
+                                @* download file  *@
+                                @if (!string.IsNullOrEmpty(item.Note.OriginalFileName))
+                                {
+                                    <a asp-page="/Download" asp-route-code="@item.Note.Code"
+                                       class="btn btn-xs tooltip btn-square grid place-content-center"
+                                       data-tip="Download @item.Note.OriginalFileName file">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round" class="size-4">
+                                            <path d="M12 15V3"/>
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <path d="m7 10 5 5 5-5"/>
+                                        </svg>
+                                    </a>
+                                }
+
+                                @* View *@
                                 <a asp-page="/ViewNote" asp-route-code="@item.Note.Code"
                                    asp-route-returnUrl="/MyNotes"
-                                   class="btn btn-xs btn-outline btn-info">View</a>
+                                   class="btn btn-xs tooltip btn-square grid place-content-center" data-tip="View note">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="size-4">
+                                        <path
+                                            d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
+                                @* Edit *@
                                 <a asp-page="/EditNote" asp-route-id="@item.Note.Id"
                                    asp-route-returnUrl="/MyNotes"
-                                   class="btn btn-xs btn-ghost">Edit</a>
+                                   class="btn btn-xs tooltip btn-square grid place-content-center" data-tip="Edit note">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="size-4">
+                                        <path
+                                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+                                        <path d="m15 5 4 4"/>
+                                    </svg>
+                                </a>
+                                @* Delete *@
                                 <form method="post" asp-page-handler="Delete" asp-route-id="@item.Note.Id"
                                       asp-route-SearchQuery="@Model.SearchQuery" asp-route-P="@Model.P">
-                                    <button class="btn btn-xs btn-ghost text-error"
+                                    <button class="btn btn-xs text-error tooltip btn-square grid place-content-center"
+                                            data-tip="Delete note"
                                             onclick="return confirm('Permanently delete this note?')">
-                                        Delete
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round"
+                                             class="size-4">
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                                            <path d="M3 6h18"/>
+                                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        </svg>
                                     </button>
                                 </form>
                             </div>
